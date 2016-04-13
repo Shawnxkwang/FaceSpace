@@ -31,7 +31,7 @@ public class Driver {
          */
 
         while (true) {
-            dbHelper = new DBHelper();
+            dbHelper = new DBHelper(null); // switch null to real connection eventually
             boolean validUser;
             do {
                 validUser = true;
@@ -90,7 +90,7 @@ public class Driver {
     }
 
     public boolean logInPrompt(){
-        String email,passWord;
+        String email;
         String temp = null;
         boolean valid;
         do{
@@ -107,9 +107,7 @@ public class Driver {
             System.out.println("----------------------------------------------------------------------------");
             System.out.print("Email: ");
             email = sc.nextLine();
-            System.out.print("Password: ");
-            passWord = sc.nextLine();
-            if(!dbHelper.userExists(email,passWord)){
+            if(!dbHelper.userExists(email)){
                 System.out.println("\nEmail or Password does not match any Users in the database");
                 System.out.print("Would you like to try again? (Y/N): "); temp = sc.nextLine();
                 if (temp.equalsIgnoreCase("Y")) valid = false;
@@ -161,16 +159,6 @@ public class Driver {
 
         do{
             valid = true;
-            System.out.print("Enter Password : ");
-            temp = sc.nextLine().trim();
-            if (temp.length() == 0) valid = false;
-            else user.setPassword(temp);
-        }while (!valid);
-
-
-
-        do{
-            valid = true;
             System.out.print("Enter Date of Birth (xx/xx/xxxx): ");
             temp = sc.nextLine().trim();
             if(!isValidDate(temp)) valid = false;
@@ -205,6 +193,7 @@ public class Driver {
         System.out.println("||                        2.  Send Friend Request                         ||");
         System.out.println("||                        3.  Group Menu                                  ||");
         System.out.println("||                        4.  My Messages                                 ||");
+        System.out.println("||                        5.  Log out                                     ||");
         System.out.println("----------------------------------------------------------------------------");
         int option = 0;
         boolean valid;

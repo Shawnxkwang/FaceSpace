@@ -7,7 +7,6 @@ public class User{
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
     private String birthDate;
 
     public String getFirstName() {
@@ -20,10 +19,6 @@ public class User{
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassword(){
-        return password;
     }
 
     public String getBirthDate() {
@@ -42,11 +37,16 @@ public class User{
         this.email = email;
     }
 
-    public void setPassword(String password){
-        this.password = password;
-    }
-
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+    }
+
+    @Override
+    public String toString() {
+        return "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                '}';
     }
 }
