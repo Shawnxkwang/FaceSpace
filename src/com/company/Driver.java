@@ -20,8 +20,6 @@ public class Driver {
     //  login to the DB.
     static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
     static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
-    Connection conn = null;
-    Statement stmt = null;
     static final String USER = "xiw69";
     static final String PASS = "3799662";
 
@@ -39,7 +37,9 @@ public class Driver {
          */
 
 
-
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
         try{
             //Register JDBC driver
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -48,9 +48,31 @@ public class Driver {
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
+            while (true) {
+                dbHelper = new DBHelper(conn, stmt,rs); // switch null to real connection eventually
+                boolean validUser;
+                do {
+                    validUser = true;
+                    switch (loginScreen()) {
+                        case 1:
+                            validUser = logInPrompt();
+                            break;
+                        case 2:
+                            validUser = registerPrompt();
+                            break;
+                    }
+                } while (!validUser);
+
+                while (validUser){
+                    switch (getMenuChoice()){
+
+                    }
+                }
+
+            }
             // Clean-up Environment
-            //stmt.close();
-            //conn.close();
+
+
         }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
@@ -64,6 +86,12 @@ public class Driver {
                     stmt.close();
             }catch(SQLException se2){
             }// nothing we can do
+            try {
+                if (rs != null)
+                    rs.close();
+            }catch(SQLException sers){
+
+            }
             try{
                 if(conn!=null)
                     conn.close();
@@ -73,28 +101,7 @@ public class Driver {
         }//end try
 
 
-        while (true) {
-            dbHelper = new DBHelper(null); // switch null to real connection eventually
-            boolean validUser;
-            do {
-                validUser = true;
-                switch (loginScreen()) {
-                    case 1:
-                        validUser = logInPrompt();
-                        break;
-                    case 2:
-                        validUser = registerPrompt();
-                        break;
-                }
-            } while (!validUser);
 
-            while (validUser){
-                switch (getMenuChoice()){
-
-                }
-            }
-
-        }
     }
     public int loginScreen(){
         int menuChoice = 0;

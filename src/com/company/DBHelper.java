@@ -13,8 +13,10 @@ public class DBHelper {
     private Statement statement;
     private ResultSet resultSet; //used to hold the result of your query (if one
 
-    DBHelper(Connection connection){
+    DBHelper(Connection connection, Statement statement, ResultSet resultSet ){
         this.connection = connection;
+        this.statement = statement;
+        this.resultSet = resultSet;
     }
 
     public boolean userExists(String email){
