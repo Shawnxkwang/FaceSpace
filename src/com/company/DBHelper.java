@@ -1,17 +1,36 @@
 package com.company;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Created by Zach on 4/7/16.
  */
 public class DBHelper {
+    private Connection connection;
+    private Statement statement;
+    private ResultSet resultSet; //used to hold the result of your query (if one
 
-
-
-    public boolean userExists(String email, String password){
-        //Check  if user exists
-        return false;
+    DBHelper(Connection connection){
+        this.connection = connection;
     }
 
+    public boolean userExists(String email){
+        //Check  if user exists
+        try {
+            statement = connection.createStatement();
+            String checkUser = "SELECT userID FROM UserTable WHERE email ="+email; //sample query
+            resultSet = statement.executeQuery(checkUser);
+
+            if (resultSet.next()) return true; // has user
+            else return false;  // no user
+        }catch (SQLException e){
+            System.out.println("Failure to check if user exists");
+        }
+        return false;
+    }
 
     public boolean isEstablishedFriend(){
         //Check friendship is established
@@ -25,7 +44,10 @@ public class DBHelper {
 
     public boolean createUser(User user){
         // Creates user retruns false if userExists
-        if(userExists(user.getEmail(),user.getPassword())) return false;
+        if(userExists(user.getEmail())){
+            System.out.println("Failed to Create:\n");
+            return false;
+        }
         return true;
     }
 
