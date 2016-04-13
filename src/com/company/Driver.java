@@ -1,10 +1,10 @@
 package com.company;
 
-import java.io.Console;
+
+import java.sql.Date;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -209,10 +209,11 @@ public class Driver {
 
         do{
             valid = true;
-            System.out.print("Enter Date of Birth (xx/xx/xxxx): ");
+            System.out.print("Enter Date of Birth (xx/xx/xxxx): "); //mm/dd/yyyyy
             temp = sc.nextLine().trim();
-            if(!isValidDate(temp)) valid = false;
-            else user.setBirthDate(temp);
+            Date date = isValidDate(temp);
+            if(date == null) valid = false;
+            else user.setBirthDate(date);
         }while (!valid);
 
         return dbHelper.createUser(user);
@@ -267,17 +268,18 @@ public class Driver {
         return ptr.matcher(email).matches();
     }
 
-    public boolean isValidDate(String dateToValdate) {
+    public Date isValidDate(String dateToValdate) {
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         formatter.setLenient(false);
         Date parsedDate = null;
         try {
-            parsedDate = formatter.parse(dateToValdate);
-            return true;
+            parsedDate = new Date(formatter.parse(dateToValdate).getTime());
+            return parsedDate;
         } catch (ParseException e) {
             //Handle exception
-            return false;
+            System.out.println("AN Error occured when trying to parse that date please try again");
+            return null;
 
         }
 

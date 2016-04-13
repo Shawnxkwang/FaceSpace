@@ -1,5 +1,8 @@
 package com.company;
 
+
+import java.sql.Date;
+
 /**
  * Created by Zach on 4/12/16.
  */
@@ -7,7 +10,7 @@ public class User{
     private String firstName;
     private String lastName;
     private String email;
-    private String birthDate;
+    private Date birthDate;
 
     public String getFirstName() {
         return firstName;
@@ -21,7 +24,7 @@ public class User{
         return email;
     }
 
-    public String getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
@@ -37,16 +40,15 @@ public class User{
         this.email = email;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
     @Override
     public String toString() {
-        return "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                '}';
+        return ("First Name = " + firstName +"\n"+
+                "Last Name = " + lastName  +"\n"+
+                "Email = " + email +"\n"+
+                "Birth Date = " + birthDate+"\n");
     }
 }
