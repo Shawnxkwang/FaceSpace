@@ -1,14 +1,14 @@
 package com.company;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.*;
+import java.io.*;
 
 /**
  * Created by Zach on 4/7/16.
  */
 public class DBHelper {
+
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet; //used to hold the result of your query (if one
@@ -55,5 +55,7 @@ public class DBHelper {
         // Adds Friend to users Pending
         return true;
     }
+
+
 
 }
