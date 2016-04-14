@@ -14,14 +14,18 @@ import java.util.regex.Pattern;
 
 //
 public class Driver {
-    private Scanner sc = new Scanner(System.in);
-    private DBHelper dbHelper;
+
     //  Database credentials
     //  login to the DB.
-    static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
-    static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
-    static final String USER = "xiw69";
-    static final String PASS = "3799662";
+    private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
+    private static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
+    private static final String USER = "xiw69";
+    private static final String PASS = "3799662";
+
+    private User currentUser; // used for all queries about the user
+
+    private Scanner sc = new Scanner(System.in);
+    private DBHelper dbHelper;
 
     Driver(){
         /*
@@ -49,56 +53,51 @@ public class Driver {
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
             while (true) {
-                dbHelper = new DBHelper(conn, stmt,rs); // switch null to real connection eventually
+                dbHelper = new DBHelper(conn); // switch null to real connection eventually
                 boolean validUser;
+                //Switch Loop for login and register Menu
                 do {
                     validUser = true;
                     switch (loginScreen()) {
                         case 1:
-                            validUser = logInPrompt();
+                            validUser = logInPrompt();  // false if failed to find email in db
                             break;
                         case 2:
-                            validUser = registerPrompt();
+                            validUser = registerPrompt();  //false if failed to register
                             break;
                     }
                 } while (!validUser);
 
+                // Switch Loop for main Menu
                 while (validUser){
                     switch (getMenuChoice()){
+                        // Display Friends
+                        case 1:
+                            dbHelper.displayFriends(currentUser.getEmail());
+                            break;
+                        // Send Friend Request
+                        case 2:
 
+                            break;
+                        // Group Menu
+                        case 3:
+                            break;
+                        // My Messages
+                        case 4:
+                            break;
+                        //  Log out
+                        case 5:
+                            break;
                     }
                 }
 
             }
-            // Clean-up Environment
 
+        }catch (SQLException e){
 
-        }catch(SQLException se){
-            //Handle errors for JDBC
-            se.printStackTrace();
-        }catch(Exception e){
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        }finally{
-            //finally block used to close resources
-            try{
-                if(stmt!=null)
-                    stmt.close();
-            }catch(SQLException se2){
-            }// nothing we can do
-            try {
-                if (rs != null)
-                    rs.close();
-            }catch(SQLException sers){
+        }catch (ClassNotFoundException e){
 
-            }
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                se.printStackTrace();
-            }//end finally try
-        }//end try
+        }
 
 
 
@@ -157,8 +156,9 @@ public class Driver {
             System.out.println("----------------------------------------------------------------------------");
             System.out.print("Email: ");
             email = sc.nextLine();
-            if(!dbHelper.userExists(email)){
-                System.out.println("\nEmail or Password does not match any Users in the database");
+            currentUser = dbHelper.getUser(email);
+            if(currentUser != null){    //User does not exist yet with that email
+                System.out.println("\nEmail does not match any Users in the database");
                 System.out.print("Would you like to try again? (Y/N): "); temp = sc.nextLine();
                 if (temp.equalsIgnoreCase("Y")) valid = false;
                 else return false;
@@ -215,6 +215,8 @@ public class Driver {
             if(date == null) valid = false;
             else user.setBirthDate(date);
         }while (!valid);
+
+        currentUser = user;
 
         return dbHelper.createUser(user);
     }
