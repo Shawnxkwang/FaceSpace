@@ -26,7 +26,7 @@ public class DBHelper {
         //Check  if user exists
         try {
             statement = connection.createStatement();
-            String checkUser = "SELECT userID FROM UserTable WHERE email ="+email; //sample query
+            String checkUser = "SELECT email FROM UserTable WHERE email ='"+email+"'"; //sample query
             resultSet = statement.executeQuery(checkUser);
 
             if (resultSet.next()) return true; // has user
@@ -41,10 +41,10 @@ public class DBHelper {
         //Check friendship is established
         try {
             statement = connection.createStatement();
-            String query = "SELECT timeEstablished FROM Friendship WHERE person1 ="+email1
-                    +" person2 = "+ email2
-                    +" OR person2 = "+ email1
-                    +" person1 = "+ email2;
+            String query = "SELECT timeEstablished FROM Friendship WHERE person1 ='"+email1+"'"
+                    +" person2 = '"+email2+"'"
+                    +" OR person2 = '"+email1+"'"
+                    +" person1 = '"+email2+"'";
             resultSet = statement.executeQuery(query);
 
             if(resultSet.next()){
