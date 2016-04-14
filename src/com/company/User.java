@@ -46,7 +46,7 @@ public class User{
 
     @Override
     public String toString() {
-        return ("\nFirst Name = " + firstName +"\n"+
+        return ("First Name = " + firstName +"\n"+
                 "Last Name = " + lastName  +"\n"+
                 "Email = " + email +"\n"+
                 "Birth Date = " + birthDate+"\n");

@@ -26,22 +26,26 @@ public class DBHelper {
         //Check  if user exists
         try {
             statement = connection.createStatement();
-            String checkUser = "SELECT email FROM UserTable WHERE email ='"+email+"'";
+            String checkUser = "SELECT firstName,lastName,email,birthday FROM UserTable WHERE email ='"+email+"'";
             resultSet = statement.executeQuery(checkUser);
             if (resultSet.next()){
+                System.out.println("Olla Olla");
                 User user = new User();
                 user.setFirstName(resultSet.getString(1));
                 user.setLastName(resultSet.getString(2));
                 user.setEmail(resultSet.getString(3));
                 user.setBirthDate(resultSet.getDate(4));
-                end();
+                statement.close();
+                resultSet.close();
                 return user;                    // has user
             }
             else{
-                end();
+                statement.close();
+                resultSet.close();
                 return null;                  // no user
             }
         }catch (SQLException e){
+            e.printStackTrace();
             System.out.println("Failure to check if user exists");
         }
         return null;
@@ -49,10 +53,11 @@ public class DBHelper {
 
     public boolean createUser(User user){
         // Creates user returns false if does not exist
-        if(getUser(user.getEmail()) == null){
-            System.out.println("Failed to Create:\n");
+        if(getUser(user.getEmail()) != null){
+            System.out.println("\n-- USER EXISTS ---");
+            System.out.println("----------------------------------------------------------------------------");
             System.out.print(user.toString());
-            System.out.println("-- EXISTS ---");
+            System.out.println();
             return false;
         }
         try {
@@ -61,9 +66,10 @@ public class DBHelper {
             prepStatement.setString(1, user.getEmail());
             prepStatement.setString(2, user.getFirstName());
             prepStatement.setString(3, user.getLastName());
-            prepStatement.setDate(4,user.getBirthDate());
+            prepStatement.setDate(4, user.getBirthDate());
+            System.out.println(prepStatement.toString());
             prepStatement.executeUpdate();
-            end();
+            prepStatement.close();
         }catch (SQLException e){
             System.out.println("Something Went wrong adding that user");
         }
@@ -77,10 +83,12 @@ public class DBHelper {
 
             // Collects Formed Friendships
             statement = connection.createStatement();
-            String formedFriends = "SELECT fName,lName " +
+            String formedFriends = "SELECT UserTable.firstName, UserTable.lastName " +
                     "FROM UserTable, " +
-                    "(SELECT person2 FROM Friendship WHERE person1="+email+"AND timeEstablished is NOT NULL ) as F_Emails " +
-                    "WHERE UserTable.email = F_Emails.person2";
+                    "(SELECT Friendship.person2 FROM Friendship WHERE person1='"+email+"' AND timeEstablished is NOT NULL) F_Emails " +
+                    "WHERE UserTable.email=F_Emails.person2";
+
+            System.out.println(formedFriends);
             resultSet = statement.executeQuery(formedFriends);
 
             System.out.println("           Formed Friendships            ");
@@ -88,7 +96,8 @@ public class DBHelper {
             while (resultSet.next()){
                 System.out.printf("%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2));
             }
-            end();
+            statement.close();
+            resultSet.close();
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -96,8 +105,8 @@ public class DBHelper {
             statement = connection.createStatement();
             String pendingFriends = "SELECT fName,lName " +
                     "FROM UserTable, " +
-                    "(SELECT person2 FROM Friendship WHERE person1="+email+"AND timeEstablished is NULL ) as F_Emails " +
-                    "WHERE UserTable.email = F_Emails.person2 AND";
+                    "(SELECT person2 FROM Friendship WHERE person1="+email+" AND timeEstablished is NULL ) F_Emails " +
+                    "WHERE UserTable.email = F_Emails.person2";
 
             System.out.println("           Pending Friendships            ");
             System.out.println("----------------------------------------------------------------------------");
@@ -105,10 +114,12 @@ public class DBHelper {
             while (resultSet.next()){
                 System.out.printf("%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2));
             }
-            end();
+            statement.close();
+            resultSet.close();
 
         }catch (SQLException e){
             System.out.println("Failure to Display Friends");
+            e.printStackTrace();
         }
     }
 
@@ -130,7 +141,8 @@ public class DBHelper {
             else {                                                           // Pending Friendship
                 createPendingFriend(email1,email2);
             }
-            end();
+            statement.close();
+            resultSet.close();
             return true;
         }catch (SQLException e){
             System.out.println("Something Went wrong attempting to add a pending friend");
@@ -147,7 +159,7 @@ public class DBHelper {
                     "(person1="+email2+" AND person2="+email1+")";
             prepStatement = connection.prepareStatement(establishFriendship);
             prepStatement.executeUpdate();
-            end();
+            prepStatement.close();
             return true;
         }catch (SQLException e){
             System.out.println("Something Went establishing the friendship");
@@ -165,20 +177,11 @@ public class DBHelper {
             prepStatement.setTimestamp(3, timestamp);
             prepStatement.setTimestamp(4,null); //null until a friendship is established
             prepStatement.executeUpdate();
-            end();
+            prepStatement.close();
         }catch (SQLException e){
             System.out.println("Something Went wrong adding that user");
         }
         return true;
     }
 
-    private void end(){
-        try {
-            statement.close();
-            prepStatement.close();
-            resultSet.close();
-        }catch (SQLException e){
-            System.out.println("Error Closing Connections");
-        }
-    }
 }

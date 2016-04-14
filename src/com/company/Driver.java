@@ -77,7 +77,7 @@ public class Driver {
                             break;
                         // Send Friend Request
                         case 2:
-
+                            dbHelper.addPendingFriend(currentUser.getEmail(),friendSearchEntry());
                             break;
                         // Group Menu
                         case 3:
@@ -157,7 +157,7 @@ public class Driver {
             System.out.print("Email: ");
             email = sc.nextLine();
             currentUser = dbHelper.getUser(email);
-            if(currentUser != null){    //User does not exist yet with that email
+            if(currentUser == null){    //User does not exist yet with that email
                 System.out.println("\nEmail does not match any Users in the database");
                 System.out.print("Would you like to try again? (Y/N): "); temp = sc.nextLine();
                 if (temp.equalsIgnoreCase("Y")) valid = false;
@@ -231,6 +231,19 @@ public class Driver {
         System.out.println("                \\/       \\/          \\/            \\/     \\/");
         System.out.println("----------------------------------------------------------------------------");
 
+    }
+
+    public String friendSearchEntry(){
+        boolean valid;
+        String temp;
+        do{
+            valid = true;
+            System.out.print("Enter Email Of The Friend You Want To Add: ");
+            temp = sc.nextLine().trim();
+            if (!isValidEmailAddress(temp)) valid = false;
+        }while (!valid);
+
+        return temp;
     }
 
     public int getMenuChoice() {
