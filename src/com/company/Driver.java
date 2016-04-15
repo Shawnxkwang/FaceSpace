@@ -12,7 +12,16 @@ import java.util.regex.Pattern;
  * Created by Zach on 4/7/16.
  */
 
-//
+        /*
+            " ______                _____                        __   ___  "
+            "|  ____|              / ____|                      /_ | / _ \ "
+            "| |__ __ _  ___ ___  | (___  _ __   __ _  ___ ___   | || | | |"
+            "|  __/ _` |/ __/ _ \  \___ \| '_ \ / _` |/ __/ _ \  | || | | |"
+            "| | | (_| | (_|  __/  ____) | |_) | (_| | (_|  __/  | || |_| |"
+            "|_|  \__,_|\___\___| |_____/| .__/ \__,_|\___\___|  |_(_)___/ "
+            "                            | |                               "
+            "                            |_|                               "
+         */
 public class Driver {
 
     //  Database credentials
@@ -28,29 +37,12 @@ public class Driver {
     private DBHelper dbHelper;
 
     Driver(){
-        /*
-        " ______                _____                        __   ___  "
-        "|  ____|              / ____|                      /_ | / _ \ "
-        "| |__ __ _  ___ ___  | (___  _ __   __ _  ___ ___   | || | | |"
-        "|  __/ _` |/ __/ _ \  \___ \| '_ \ / _` |/ __/ _ \  | || | | |"
-        "| | | (_| | (_|  __/  ____) | |_) | (_| | (_|  __/  | || |_| |"
-        "|_|  \__,_|\___\___| |_____/| .__/ \__,_|\___\___|  |_(_)___/ "
-        "                            | |                               "
-        "                            |_|                               "
-
-         */
-
-
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
         try{
             //Register JDBC driver
             Class.forName("oracle.jdbc.driver.OracleDriver");
-
             //Open a connection
             System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
             while (true) {
                 dbHelper = new DBHelper(conn); // switch null to real connection eventually
@@ -125,12 +117,8 @@ public class Driver {
             System.out.print("Enter Option: ");
             try {
                 menuChoice = Integer.parseInt(sc.nextLine());
-                if(menuChoice != 1 && menuChoice != 2){
-                    valid = false;
-                    System.out.println("\n--   Invalid Input   --\n");
-                }
+                if(menuChoice != 1 && menuChoice != 2) valid = false;
             }catch (NumberFormatException e){
-                System.out.println("\n--   Invalid Input   --\n");
                 valid = false;
             }
         }while (!valid);
