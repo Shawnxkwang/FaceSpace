@@ -1,10 +1,10 @@
-package com.company;
+// package com.company;
 
 import java.sql.*;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
+// import java.time.*;
 import java.util.*;
 import java.io.*;
 
@@ -199,9 +199,9 @@ public class DBHelper {
             // if email2 has sent a request, good to est. friendship
             //SimpleDateFormat df = new SimpleDateFormat("YYYY-MM-DD HH24:MI:SS");
             //SimpleDateFormat df = new SimpleDateFormat("DD-MON-YYYY HH24:MI:SS:FF");
-            Calendar c = Calendar.getInstance();
+            //Calendar c = Calendar.getInstance();
 
-            System.out.println();
+          //  System.out.println();
 
             java.util.Date date= new java.util.Date();
             // not a valid month
@@ -240,7 +240,11 @@ public class DBHelper {
 
     private boolean createPendingFriend(String email1,String email2){
         try {
-            Timestamp timestamp = Timestamp.from(Calendar.getInstance().getTime().toInstant());
+            
+           // Timestamp timestamp = Timestamp.from(Calendar.getInstance().getTime().toInstant());
+
+            Timestamp timestamp = new Timestamp(new java.util.Date().getTime());
+            
             String inputQuery = "INSERT INTO Friendship VALUES (?,?,?,?)";
             prepStatement = connection.prepareStatement(inputQuery);
             prepStatement.setString(1, email1);

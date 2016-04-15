@@ -1,4 +1,4 @@
-package com.company;
+// package com.company;
 
 
 import java.sql.Date;
@@ -37,9 +37,10 @@ public class Driver {
     private DBHelper dbHelper;
 
     Driver(){
+         System.out.println("start driver");
         try{
             //Register JDBC driver
-            Class.forName("oracle.jdbc.driver.OracleDriver");
+           // Class.forName("oracle.jdbc.driver.OracleDriver");
             //Open a connection
             System.out.println("Connecting to database...");
             Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
@@ -86,10 +87,11 @@ public class Driver {
             }
 
         }catch (SQLException e){
-
-        }catch (ClassNotFoundException e){
-
+              System.out.println(e);
         }
+        // catch (ClassNotFoundException e){
+        //          System.out.println(e);
+        // }
 
 
 
