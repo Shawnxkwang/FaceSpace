@@ -1,10 +1,10 @@
-// package com.company;
+package com.company;
+
 
 import java.sql.*;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-// import java.time.*;
 import java.util.*;
 import java.io.*;
 
@@ -66,7 +66,6 @@ public class DBHelper {
             prepStatement.setString(2, user.getFirstName());
             prepStatement.setString(3, user.getLastName());
             prepStatement.setDate(4, user.getBirthDate());
-            System.out.println(prepStatement.toString());
             prepStatement.executeUpdate();
             prepStatement.close();
         }catch (SQLException e){
@@ -76,61 +75,56 @@ public class DBHelper {
     }
 
 
-    public void displayFriends(String email){
+    public void displayFriendSummary(String email){
         try {
-            /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // Collects Formed Friendships
             statement = connection.createStatement();
-            String formedFriends = "SELECT t.firstName, t.lastName " +
-                    "FROM UserTable t, " +
-                    "(SELECT Friendship.person2 FROM Friendship WHERE (Friendship.person1='"+email+"' AND Friendship.timeEstablished is NOT NULL) F_Emails " +
-                    "WHERE t.email=F_Emails.person2";
+            String formedFriends = "SELECT firstName, lastName, email "+
+                                    "FROM UserTable "+
+                                    "WHERE email IN (SELECT person1 "+
+                                    "FROM Friendship "+
+                                    "WHERE person2='"+email+"' AND timeEstablished IS NOT NULL) "+
+                                    "OR email IN (SELECT person2 "+"FROM Friendship " +
+                                    "WHERE person1='"+email+"' AND timeEstablished IS NOT NULL)";
 
-            //  SELECT T.firstName, T.lastName FROM UserTable T, (SELECT Friendship.person2='email' AND Friendship.timeEstablished
-            //  SELECT
-
-            System.out.println(formedFriends);
             resultSet = statement.executeQuery(formedFriends);
 
-            System.out.println("\n --> Formed Friendships");
+            System.out.println("\n\n --> Formed Friendships\n");
+            System.out.printf("          %-20s%-20s%-20s\n", "First Name", "Last Name", "Email");
             System.out.println("----------------------------------------------------------------------------");
-            System.out.println(resultSet.next());
             if (resultSet.next()){
                 do{
-                    System.out.printf("%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2));
+                    System.out.printf("          %-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
                 }while (resultSet.next());
             }
             else System.out.println("              O how very sad....you appear to have no friends");
-
-            System.out.println("\n----------------------------------------------------------------------------\n\n");
-
             statement.close();
             resultSet.close();
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////////
 
             //Collects Pending Friendships
             statement = connection.createStatement();
-            String pendingFriends = "SELECT fName,lName " +
-                    "FROM UserTable, " +
-                    "(SELECT person2 FROM Friendship WHERE person1="+email+" AND timeEstablished is NULL ) F_Emails " +
-                    "WHERE UserTable.email = F_Emails.person2";
-            resultSet = statement.executeQuery(formedFriends);
+            String pendingFriends = "SELECT firstName, lastName, email "+
+                    "FROM UserTable "+
+                    "WHERE email IN (SELECT person1 "+
+                    "FROM Friendship "+
+                    "WHERE person2='"+email+"' AND timeEstablished IS NULL) "+
+                    "OR email IN (SELECT person2 "+"FROM Friendship " +
+                    "WHERE person1='"+email+"' AND timeEstablished IS NULL)";
+            resultSet = statement.executeQuery(pendingFriends);
 
-            System.out.println("\n --> Pending Friendships");
+            System.out.println("\n\n --> All Pending Friendships (Sent And Received)\n");
+            System.out.printf("          %-20s%-20s%-20s\n", "First Name", "Last Name", "Email");
             System.out.println("----------------------------------------------------------------------------");
-
             if(resultSet.next()){
                 do{
-                    System.out.printf("%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2));
+                    System.out.printf("          %-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
                 }while (resultSet.next());
             }
-            else System.out.println("                 You haven't sent any requests yet :(");
-            System.out.println("\n----------------------------------------------------------------------------");
+            else System.out.println("          You haven't sent or been sent any requests yet :(");
             statement.close();
             resultSet.close();
             System.out.println("\n\n");
+
+
 
         }catch (SQLException e){
             System.out.println("Failure to Display Friends");
@@ -139,16 +133,16 @@ public class DBHelper {
     }
 
 
-    public boolean addPendingFriend(String email1, String email2){
+    public boolean createRequest(String email1, String email2){
         try {
             // Check if anyone even has that email
             if(getUser(email2) == null){
-                System.out.println("Sorry nobody in our database has that email");
+                System.out.println("\nSorry nobody in our database has that email\n");
                 return false;
             }
             // Check if they are already friends
             if(isFriend(email1,email2)){
-                System.out.println("Your are already friends with: "+email2);
+                System.out.println("\nYou are already friends with: "+email2+"\n");
                 return false;
             }
             // Checks if at email 2 has sent email 1 a request
@@ -159,12 +153,12 @@ public class DBHelper {
 
 
             if (resultSet.next()) {
-                System.out.println("Establishing friendship");
+                System.out.println("\n"+email2 +" already sent you a friend request establishing friendship now :)\n");
                 establishFriend(email1, email2);
             }
             else {
                 if(!pendingExists(email1,email2)) createPendingFriend(email1, email2);
-                else System.out.println("You Requested them already geez have some patience");
+                else System.out.println("\n       -- You Requested them already geez have some patience :p --\n");
             }
 
             statement.close();
@@ -196,21 +190,12 @@ public class DBHelper {
     private boolean establishFriend(String email1, String email2){
         try {
 
-            // if email2 has sent a request, good to est. friendship
-            //SimpleDateFormat df = new SimpleDateFormat("YYYY-MM-DD HH24:MI:SS");
-            //SimpleDateFormat df = new SimpleDateFormat("DD-MON-YYYY HH24:MI:SS:FF");
-            //Calendar c = Calendar.getInstance();
-
-          //  System.out.println();
-
+            Calendar c = Calendar.getInstance();
             java.util.Date date= new java.util.Date();
-            // not a valid month
             String establishFriendship = "UPDATE Friendship " +
                     "SET timeEstablished=TO_TIMESTAMP('"+new Timestamp(date.getTime())+"','YYYY-MM-DD HH24:MI:SS:FF')"+
                     " WHERE (person1='"+email1+"' AND person2='"+email2+"' AND timeEstablished IS NULL) OR " +
                     "(person1='"+email2+"' AND person2='"+email1+"' AND timeEstablished IS NULL)";
-
-            System.out.println(establishFriendship);
             statement = connection.createStatement();
             statement.executeQuery(establishFriendship);
             statement.close();
@@ -222,7 +207,6 @@ public class DBHelper {
         }
 
     }
-
 
     private boolean pendingExists(String email1, String email2){
         try {
@@ -240,115 +224,156 @@ public class DBHelper {
 
     private boolean createPendingFriend(String email1,String email2){
         try {
-            
-           // Timestamp timestamp = Timestamp.from(Calendar.getInstance().getTime().toInstant());
-
-            Timestamp timestamp = new Timestamp(new java.util.Date().getTime());
-            
+            //Timestamp timestamp = Timestamp.from(Calendar.getInstance().getTime().toInstant());
             String inputQuery = "INSERT INTO Friendship VALUES (?,?,?,?)";
             prepStatement = connection.prepareStatement(inputQuery);
             prepStatement.setString(1, email1);
             prepStatement.setString(2, email2);
-            prepStatement.setTimestamp(3, timestamp);
+            prepStatement.setTimestamp(3, new Timestamp(new java.util.Date().getTime()));
             prepStatement.setTimestamp(4,null); //null until a friendship is established
             prepStatement.executeUpdate();
             prepStatement.close();
-            System.out.println("Request Sent");
+            System.out.println("\nRequest Sent To: "+ email2 +"\n");
         }catch (SQLException e){
             System.out.println("Something Went wrong adding that user");
         }
         return true;
     }
 
-    ///////////////////////////
-
-
-
-    public ArrayList<String> getFriends(String email){
-        ArrayList<String> myFriends = new ArrayList<String>();
+    public void acceptRequest(String email, Scanner sc){
         try {
-            /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // Collects Formed Friendships
             statement = connection.createStatement();
-            String formedFriends = "SELECT UserTable.firstName, UserTable.lastName " +
-                    "FROM UserTable, " +
-                    "(SELECT Friendship.person2 FROM Friendship WHERE person1='"+email+"' AND timeEstablished is NOT NULL) F_Emails " +
-                    "WHERE UserTable.email=F_Emails.person2";
+            String recRequests = "SELECT firstName, lastName, email " +
+                    "FROM UserTable " +
+                    "WHERE email IN (SELECT person1 " +
+                    "FROM Friendship " +
+                    "WHERE person2='" + email + "' AND timeEstablished IS NULL)";
+            resultSet = statement.executeQuery(recRequests);
+            System.out.println("\n\n --> Pending Friend Requests Sent To You\n");
+            System.out.printf("          %-20s%-20s%-20s\n", "First Name", "Last Name", "Email");
+            System.out.println("----------------------------------------------------------------------------");
 
-            resultSet = statement.executeQuery(formedFriends);
+            if (resultSet.next()) {
+                ArrayList<String> validEmails = new ArrayList<String>();
+                do {
+                    validEmails.add(resultSet.getString(3));
+                    System.out.printf("          %-20s%-20s%-20s\n", resultSet.getString(1), resultSet.getString(2), resultSet.getString(3));
+                } while (resultSet.next());
 
-            System.out.println("\n --> Formed Friendships");
+                // Get Entry for
+                boolean valid;
+                do{
+                    valid = true;
+                    System.out.println("\n----------------------------------------------------------------------------");
+                    System.out.print("Enter Email of the friend you would like to confirm: ");
+                    String entry = sc.nextLine();
+                    if(Driver.isValidEmailAddress(entry) && validEmails.contains(entry) ){
+                        if (establishFriend(email,entry)) System.out.println("\nYou are now friends with "+ entry+" :)\n");
+                        else System.out.println("There was an issue confirming the request from "+entry);
+                    }
+                    else System.out.println("There is no pending request with the email : "+entry);
+                    return;
+
+                }while (!valid);
+
+            } else System.out.println("            You have not been sent any requests at this time :(");
+
+            System.out.println("\n\n");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void displayRequests(String email){
+        try {
+            statement = connection.createStatement();
+            String sentRequests = "SELECT firstName, lastName, email "+
+                    "FROM UserTable "+
+                    "WHERE email IN (SELECT person2 "+
+                    "FROM Friendship "+
+                    "WHERE person1='"+email+"' AND timeEstablished IS NULL)";
+            resultSet = statement.executeQuery(sentRequests);
+            System.out.println("\n\n --> Pending Friend Requests Sent By You\n");
+            System.out.printf("          %-20s%-20s%-20s\n", "First Name", "Last Name", "Email");
+            System.out.println("----------------------------------------------------------------------------");
+            if(resultSet.next()){
+                do{
+                    System.out.printf("          %-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
+                }while (resultSet.next());
+            }
+            else System.out.println("          You do have any pending requests at this time :(");
+
+
+            statement = connection.createStatement();
+            String recRequests = "SELECT firstName, lastName, email "+
+                    "FROM UserTable "+
+                    "WHERE email IN (SELECT person1 "+
+                    "FROM Friendship "+
+                    "WHERE person2='"+email+"' AND timeEstablished IS NULL)";
+            resultSet = statement.executeQuery(recRequests);
+            System.out.println("\n\n --> Pending Friend Requests Sent To You\n");
+            System.out.printf("          %-20s%-20s%-20s\n", "First Name", "Last Name", "Email");
+            System.out.println("----------------------------------------------------------------------------");
+            if(resultSet.next()){
+                do{
+                    System.out.printf("          %-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
+                }while (resultSet.next());
+            }
+            else System.out.println("            You have not been sent any requests at this time :(");
+            System.out.println("\n\n\n");
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void debug(){
+        try {
+
+
+            statement = connection.createStatement();
+
+            String all = "SELECT firstName, lastName,email "+
+                    "FROM UserTable";
+
+
+            System.out.println(all);
+
+            resultSet = statement.executeQuery(all);
+
+            System.out.println("\n --> UserTable");
             System.out.println("----------------------------------------------------------------------------");
             if (resultSet.next()){
                 do{
-                    System.out.printf("%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2));
-                    myFriends.add(resultSet.getString(0));
+                    System.out.printf("                  %-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
                 }while (resultSet.next());
             }
-            else System.out.println("              O how very sad....you appear to have no friends");
-
-            System.out.println("\n----------------------------------------------------------------------------\n\n");
-
-            statement.close();
-            resultSet.close();
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            //Collects Pending Friendships
-//            statement = connection.createStatement();
-//            String pendingFriends = "SELECT fName,lName " +
-//                    "FROM UserTable, " +
-//                    "(SELECT person2 FROM Friendship WHERE person1="+email+" AND timeEstablished is NULL ) F_Emails " +
-//                    "WHERE UserTable.email = F_Emails.person2";
-//            resultSet = statement.executeQuery(formedFriends);
-//
-//            System.out.println("\n --> Pending Friendships");
-//            System.out.println("----------------------------------------------------------------------------");
-//
-//            if(resultSet.next()){
-//                do{
-//                    System.out.printf("%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2));
-//                }while (resultSet.next());
-//            }
-//            else System.out.println("                 You haven't sent any requests yet :(");
-//            System.out.println("\n----------------------------------------------------------------------------");
-//            statement.close();
-//            resultSet.close();
-//            System.out.println("\n\n");
-
-        }catch (SQLException e){
-            System.out.println("Failure to Display Friends");
-            e.printStackTrace();
-        }
-
-        return myFriends;
-    }
-
-    public  ArrayList<String> displayFriendsRequest(String email){
-
-        ArrayList<String> pendingRequests = new ArrayList<String>();
-        // List All Friends And Pending
-        try {
-            statement = connection.createStatement();
-            String alreadyFriends = "SELECT person1 " +
-                    "FROM Friendship " +
-                    "WHERE ( person2='"+email+"' AND timeEstablished is NULL) ";
 
 
-            System.out.println(alreadyFriends);
-            resultSet = statement.executeQuery(alreadyFriends);
+            String e = "SELECT person1, person2,timeEstablished "+
+                    "FROM Friendship";
 
-            while (resultSet.next()){
-                resultSet.getString(0);
-                pendingRequests.add(resultSet.getString(0));
-                // if result set has the
 
+            System.out.println(e);
+
+            resultSet = statement.executeQuery(e);
+
+            System.out.println("\n --> Friendship");
+            System.out.println("----------------------------------------------------------------------------");
+            if (resultSet.next()){
+                do{
+                    String s;
+                    try{
+                        s = resultSet.getTimestamp(3).toString();
+                    }catch (NullPointerException e2){
+                        s = null;
+                    }
+
+                    System.out.printf("             %-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),s);
+                }while (resultSet.next());
             }
-
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return   pendingRequests;
     }
 }
