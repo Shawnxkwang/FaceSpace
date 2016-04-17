@@ -22,6 +22,10 @@ public class DBHelper {
         this.connection = connection;
     }
 
+
+    /////////////////////////////////////////////////////////////////
+    // User Functions
+    /////////////////////////////////////////////////////////////////
     public User getUser(String email){
         //Check  if user exists
         try {
@@ -74,6 +78,13 @@ public class DBHelper {
         return true;
     }
 
+    public boolean dropUser(User user){
+        return false;
+    }
+
+    /////////////////////////////////////////////////////////////////
+    // Friend Functions
+    /////////////////////////////////////////////////////////////////
 
     public void displayFriendSummary(String email){
         try {
@@ -132,7 +143,6 @@ public class DBHelper {
         }
     }
 
-
     public boolean createRequest(String email1, String email2){
         try {
             // Check if anyone even has that email
@@ -155,9 +165,8 @@ public class DBHelper {
             if (resultSet.next()) {
                 System.out.println("\n"+email2 +" already sent you a friend request establishing friendship now :)\n");
                 establishFriend(email1, email2);
-            }
-            else {
-                if(!pendingExists(email1,email2)) createPendingFriend(email1, email2);
+            } else {
+                if(!pendingFriendExists(email1,email2)) createPendingFriend(email1, email2);
                 else System.out.println("\n       -- You Requested them already geez have some patience :p --\n");
             }
 
@@ -208,7 +217,7 @@ public class DBHelper {
 
     }
 
-    private boolean pendingExists(String email1, String email2){
+    private boolean pendingFriendExists(String email1, String email2){
         try {
             statement = connection.createStatement();
             String exists = "SELECT timeInitiated FROM Friendship "+
@@ -327,7 +336,114 @@ public class DBHelper {
         }
     }
 
-    private void debug(){
+    public void threeDegrees(String email1, Scanner sc){
+        try {
+            boolean valid;
+            String email2;
+            do{
+                valid = true;
+                System.out.print("Enter Email Of User You Want To Run Three Degrees On: ");
+                email2 = sc.nextLine().trim();
+                if (!Driver.isValidEmailAddress(email2)) valid = false;
+            }while (!valid);
+            // Check valid email
+            if (getUser(email2) == null) {
+                System.out.println("\nThat User Does not exist in our database\n"); return;
+            }
+            // Check first Degree
+            if(isFriend(email1,email2)){
+                System.out.println("\n"+email1 + " <--> "+email2+"\n"); return;
+            }
+
+            // Second Degree
+            statement = connection.createStatement();
+            String degree2 = "SELECT T.firstName, T.lastName, T.email "+
+                    "FROM UserTable T WHERE T.email IN "+
+                    "(SELECT person2 FROM Friendship WHERE person1='"+email1+"' AND timeEstablished IS NOT NULL "+
+                    "UNION " +
+                    "SELECT person1 FROM Friendship WHERE person2='"+email1+"' AND timeEstablished IS NOT NULL) "+
+                    "AND T.email IN"+
+                    "(SELECT person2 FROM Friendship WHERE person1='"+email2+"' AND timeEstablished IS NOT NULL "+
+                    "UNION " +
+                    "SELECT person1 FROM Friendship WHERE person2='"+email2+"' AND timeEstablished IS NOT NULL)";
+
+
+            resultSet = statement.executeQuery(degree2);
+            ArrayList<String> names1;
+
+            if(resultSet.next()){
+                System.out.println();
+                names1 = new ArrayList<String>();
+                do {
+                    names1.add(resultSet.getString(3));
+                }while (resultSet.next());
+                System.out.println(email1);
+                System.out.println("     |");
+                System.out.println("     |");
+                System.out.println("     |");
+                System.out.println("     |");
+                for (int i = 0; i < names1.size(); i++) {
+                    System.out.println(names1.get(i));
+                }
+                System.out.println("     |");
+                System.out.println("     |");
+                System.out.println("     |");
+                System.out.println("     |");
+                System.out.println(email2);
+                System.out.println();
+                return;
+            }
+            else {
+                System.out.println("Failed 2 Degrees");
+            }
+
+            statement = connection.createStatement();
+
+
+            // UserTable       (id,firstname,lastname)
+
+            // Friendship      (person1,person2,timeInit,timeEstablished)
+
+
+            String degree3 = "SELECT T.firstName, T.lastName, T.email "+
+                    "FROM UserTable T WHERE T.email IN "+
+                    "(SELECT person2 FROM Friendship WHERE person1='"+email1+"' AND timeEstablished IS NOT NULL "+
+                    "UNION " +
+                    "SELECT person1 FROM Friendship WHERE person2='"+email1+"' AND timeEstablished IS NOT NULL) "+
+                    // User ones friends
+
+
+                    "AND T.email IN"+
+                    "(SELECT person2 FROM Friendship WHERE person1='"+email2+"' AND timeEstablished IS NOT NULL "+
+                    "UNION " +
+                    "SELECT person1 FROM Friendship WHERE person2='"+email2+"' AND timeEstablished IS NOT NULL)";
+                    // User twos friends
+
+
+            System.out.println(degree3);
+            resultSet = statement.executeQuery(degree3);
+            ArrayList<String> names2;
+
+            if(resultSet.next()){
+                System.out.println();
+                names2 = new ArrayList<String>();
+                do {
+                    System.out.println(resultSet.getString(1));
+                    names2.add(resultSet.getString(1));
+                }while (resultSet.next());
+
+                return;
+            }
+            else {
+                System.out.println("Failed 3 Degrees");
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void debug(){
         try {
 
 
@@ -342,10 +458,11 @@ public class DBHelper {
             resultSet = statement.executeQuery(all);
 
             System.out.println("\n --> UserTable");
+            System.out.printf("\n    %-20s%-20s%-20s\n","First","Last","Email");
             System.out.println("----------------------------------------------------------------------------");
             if (resultSet.next()){
                 do{
-                    System.out.printf("                  %-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
+                    System.out.printf("    %-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
                 }while (resultSet.next());
             }
 
@@ -369,7 +486,7 @@ public class DBHelper {
                         s = null;
                     }
 
-                    System.out.printf("             %-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),s);
+                    System.out.printf("%-50s%-50s%-50s\n",resultSet.getString(1),resultSet.getString(2),s);
                 }while (resultSet.next());
             }
         }catch (SQLException e){
