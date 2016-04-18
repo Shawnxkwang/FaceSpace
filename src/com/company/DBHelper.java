@@ -79,6 +79,7 @@ public class DBHelper {
     }
 
     public boolean dropUser(User user){
+        // delete user here
         return false;
     }
 
@@ -336,6 +337,7 @@ public class DBHelper {
         }
     }
 
+    // Second Degree works Third does not
     public void threeDegrees(String email1, Scanner sc){
         try {
             boolean valid;
@@ -443,20 +445,77 @@ public class DBHelper {
         }
     }
 
+    /////////////////////////////////////////////////////////////////
+    // Group Functions
+    /////////////////////////////////////////////////////////////////
+
+    public void displayGroups(String email){
+
+    }
+
+    public boolean acceptGroupRequests(String email){
+        return false;
+    }
+
+    public boolean openGroup(){
+        return false;
+    }
+
+    public void getGroupMessages(String groupID){
+
+    }
+
+    /////////////////////////////////////////////////////////////////
+    // Message Functions
+    /////////////////////////////////////////////////////////////////
+
+    public void displayRecentMessages(String email){
+        // displays Recent 5 Messages given a users email
+
+    }
+
+    public ArrayList<User> getRecentMessages(String email){
+        // displays Recent 5 Messages given a users email
+        return null;
+    }
+
+    public String openMessageFromEmail(String email1, String email2){
+        // get all messages
+        return null; // null if no messages exist
+    }
+
+    public void sendMessage(String email1, String email2){
+        // send message from email1 to email2
+    }
+
+    public void displayTopMessagers(ArrayList<User> users){
+        // display these users by top #  of messages sent to these users
+    }
+
+    public void displayAllMessages(String email){
+        // display all Messages
+    }
+
+    /////////////////////////////////////////////////////////////////
+    // Search For A User
+    /////////////////////////////////////////////////////////////////
+
+    public void searchUser(Scanner sc){
+
+        System.out.println("Please Enter The Name of the User you are looking for: ");
+        String searchTerm = sc.nextLine();
+
+        // displays all users similar to name
+
+
+    }
+
     public void debug(){
         try {
-
-
             statement = connection.createStatement();
-
-            String all = "SELECT firstName, lastName,email "+
-                    "FROM UserTable";
-
-
+            String all = "SELECT firstName, lastName,email "+ "FROM UserTable";
             System.out.println(all);
-
             resultSet = statement.executeQuery(all);
-
             System.out.println("\n --> UserTable");
             System.out.printf("\n    %-20s%-20s%-20s\n","First","Last","Email");
             System.out.println("----------------------------------------------------------------------------");
@@ -465,16 +524,9 @@ public class DBHelper {
                     System.out.printf("    %-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
                 }while (resultSet.next());
             }
-
-
-            String e = "SELECT person1, person2,timeEstablished "+
-                    "FROM Friendship";
-
-
+            String e = "SELECT person1, person2,timeEstablished "+ "FROM Friendship";
             System.out.println(e);
-
             resultSet = statement.executeQuery(e);
-
             System.out.println("\n --> Friendship");
             System.out.println("----------------------------------------------------------------------------");
             if (resultSet.next()){
@@ -485,7 +537,6 @@ public class DBHelper {
                     }catch (NullPointerException e2){
                         s = null;
                     }
-
                     System.out.printf("%-50s%-50s%-50s\n",resultSet.getString(1),resultSet.getString(2),s);
                 }while (resultSet.next());
             }
@@ -493,4 +544,5 @@ public class DBHelper {
             e.printStackTrace();
         }
     }
+
 }
