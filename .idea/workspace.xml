@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be40d0a8-a90b-4177-81a0-190bebad00b9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/company/Group.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/DBHelper.java" afterPath="$PROJECT_DIR$/src/com/company/DBHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/Driver.java" afterPath="$PROJECT_DIR$/src/com/company/Driver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FaceSpace/com/company/DBHelper.class" afterPath="$PROJECT_DIR$/out/production/FaceSpace/com/company/DBHelper.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FaceSpace/com/company/Driver.class" afterPath="$PROJECT_DIR$/out/production/FaceSpace/com/company/Driver.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tables.sql" afterPath="$PROJECT_DIR$/tables.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="FaceSpace.iws" />
@@ -130,8 +130,8 @@
       <file leaf-file-name="tables.sql" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tables.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6710311" vertical-offset="115" max-vertical-offset="960">
-              <caret line="35" column="10" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.21305183" vertical-offset="294" max-vertical-offset="1155">
+              <caret line="27" column="31" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -157,10 +157,10 @@
         <option value="$PROJECT_DIR$/src/com/company/DataGenerator.java" />
         <option value="$PROJECT_DIR$/src/com/company/User.java" />
         <option value="$PROJECT_DIR$/src/com/company/Main.java" />
-        <option value="$PROJECT_DIR$/tables.sql" />
         <option value="$PROJECT_DIR$/src/com/company/Group.java" />
         <option value="$PROJECT_DIR$/src/com/company/DBHelper.java" />
         <option value="$PROJECT_DIR$/src/com/company/Driver.java" />
+        <option value="$PROJECT_DIR$/tables.sql" />
       </list>
     </option>
   </component>
@@ -540,7 +540,13 @@
       <option name="project" value="LOCAL" />
       <updated>1460939195606</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Slight changes">
+      <created>1461252776749</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1461252776749</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -565,7 +571,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22421876" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15139443" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27091634" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -618,7 +624,8 @@
     <MESSAGE value="New Driver design" />
     <MESSAGE value="Added framework for all functions in driver" />
     <MESSAGE value="Framework complete. Populate new methods in DBHelper to finish" />
-    <option name="LAST_COMMIT_MESSAGE" value="Framework complete. Populate new methods in DBHelper to finish" />
+    <MESSAGE value="Slight changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Slight changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1143,8 +1150,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tables.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6710311" vertical-offset="115" max-vertical-offset="960">
-          <caret line="35" column="10" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="10" />
+        <state vertical-scroll-proportion="0.21305183" vertical-offset="294" max-vertical-offset="1155">
+          <caret line="27" column="31" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
           <folding />
         </state>
       </provider>

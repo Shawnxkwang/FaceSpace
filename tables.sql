@@ -30,6 +30,19 @@ create table GroupTable (
 	constraints pk_groups primary key(groupID)
 );
 
+CREATE SEQUENCE group_seq;
+
+CREATE OR REPLACE TRIGGER make_group_id
+BEFORE INSERT ON GroupTable
+FOR EACH ROW
+BEGIN
+  SELECT group_seq.NEXTVAL
+  INTO   :new.groupID
+  FROM   dual;
+END;
+/
+
+
 drop table Membership cascade constraints;
 create table Membership (
 	groupID number(10) not null,
