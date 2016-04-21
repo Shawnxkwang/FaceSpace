@@ -110,8 +110,8 @@ public class Driver {
                                         dbHelper.displayGroups(currentUser.getEmail());
                                         hold();
                                         break;
-                                    case 2: // Accept Group Requests
-                                        dbHelper.acceptGroupRequests(currentUser.getEmail());
+                                    case 2: // Join a Group Requests
+                                        //dbHelper.addToGroup(currentUser.getEmail(), groupNameEntry());
                                         hold();
                                         break;
                                     case 3: // Open Group
@@ -378,9 +378,10 @@ public class Driver {
         System.out.println("||                                           |_|                          ||");
         System.out.println("----------------------------------------------------------------------------");
         System.out.println("||                        1.  Display My Groups                           ||");
-        System.out.println("||                        2.  Accept Group Requests                       ||");
-        System.out.println("||                        3.  Open Group                                  ||");
-        System.out.println("||                        4.  Return To Main Menu                         ||");
+        System.out.println("||                        2.  Join A Group                                ||");
+        System.out.println("||                        3.  Open A Group                                ||");
+        System.out.println("||                        4.  Display Top Groups                          ||");
+        System.out.println("||                        5.  Return To Main Menu                         ||");
         System.out.println("----------------------------------------------------------------------------");
         int option = 0;
         boolean valid;
@@ -397,6 +398,17 @@ public class Driver {
             }
         } while (!valid);
         return option;
+    }
+
+    public long groupNameEntry(){
+        // Top 50 Groups
+        dbHelper.displayTopGroups();
+        // Display Groups part of the current user
+        dbHelper.displayGroups(currentUser.getEmail());
+        System.out.print("Enter the group name : ");
+        String groupName = sc.nextLine();
+        //ArrayList<String> groups = dbHelper.fetchGroupMatches(groupName);
+        return 0;
     }
 
     public void getDetailedMenuChoice(User two){

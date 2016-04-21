@@ -449,15 +449,136 @@ public class DBHelper {
     // Group Functions
     /////////////////////////////////////////////////////////////////
 
-    public void displayGroups(String email){
+    public Group getGroup(long groupID){
+        //Check  if group exists
+        try {
+            statement = connection.createStatement();
+            String checkGroup = "SELECT * FROM GroupTable WHERE groupID ="+ groupID;
+            resultSet = statement.executeQuery(checkGroup);
+            if (resultSet.next()){
+                Group group = new Group();
+                group.setGroupID(groupID);
+                group.setName(resultSet.getString(2));
+                group.setDescription(resultSet.getString(3));
+                group.setMembershipLimit(resultSet.getLong(4));
+                statement.close();
+                resultSet.close();
+                return group;                    // has group
+            }
+            else{
+                statement.close();
+                resultSet.close();
+                return null;                  // no group
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Failure to check if group exists");
+        }
+
+        return null;
+    }
+
+    public boolean createGroup(Group group){
+
+        if( getGroup(group.getGroupID()) != null){
+            System.out.println("\n-- Group EXISTS ---");
+            System.out.println("----------------------------------------------------------------------------");
+            System.out.print(group.toString());
+            System.out.println();
+            return false;
+        }
+        try {
+            String inputQuery = "INSERT INTO GroupTable VALUES (?,?,?,?)";
+            prepStatement = connection.prepareStatement(inputQuery);
+            prepStatement.setLong(1, group.getGroupID());
+            prepStatement.setString(2, group.getName());
+            prepStatement.setString(3, group.getDescription());
+            prepStatement.setLong(4, group.getMembershipLimit());
+            prepStatement.executeUpdate();
+            prepStatement.close();
+        }catch (SQLException e){
+            System.out.println("Something Went wrong adding that group");
+        }
+        return true;
+    }
+
+    public boolean addToGroup(User user, Group group) {
+        // check if user exists
+        if (getUser(user.getEmail()) == null) {
+            System.out.println("\n-- USER NOT EXISTS ---\n Failed to add it to the group.");
+            System.out.println("----------------------------------------------------------------------------");
+            return false;
+        }
+        // check if group exists
+        if (getGroup(group.getGroupID()) == null) {
+            System.out.println("\n-- GROUP NOT EXISTS ---\n Failed to add it to the group.");
+            System.out.println("----------------------------------------------------------------------------");
+            return false;
+        }
+
+        // check if added
+        try {
+            statement = connection.createStatement();
+            String checkExist = "SELECT * FROM Membership " +
+                    "WHERE groupID=" + group.getGroupID() + " AND member='" + user.getEmail() + "'";
+            resultSet = statement.executeQuery(checkExist);
+            if (resultSet.next()) {
+                System.out.println("The user is already in the group.");
+                return false;
+            } else {
+                String inputQuery = "INSERT INTO Membership VALUES (?,?)";
+                prepStatement = connection.prepareStatement(inputQuery);
+                prepStatement.setLong(1, group.getGroupID());
+                prepStatement.setString(2, user.getEmail());
+                prepStatement.executeUpdate();
+                prepStatement.close();
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Something Went wrong adding that user to the group");
+            return false;
+        }
 
     }
 
-    public boolean acceptGroupRequests(String email){
-        return false;
+    public void displayGroups(String email){
+        try {
+            statement = connection.createStatement();
+            String groupQuery = "SELECT DISTINCT groupID FROM Membership WHERE member="+email;
+            resultSet = statement.executeQuery(groupQuery);
+            if (resultSet.next()){
+                do{
+                    Group group = getGroup(resultSet.getLong(1));
+                    System.out.println(group.toString());
+                }while (resultSet.next());
+            }
+            else System.out.println("\nYou are not a member of any groups\n");
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void displayTopGroups(){
+
+    }
+
+    public ArrayList<String> fetchGroupMatches(){
+        try {
+            ArrayList<String> matches = new ArrayList<String>();
+            statement = connection.createStatement();
+            String pendingFriends = "";
+            resultSet = statement.executeQuery(pendingFriends);
+        }catch (SQLException e){
+
+        }
+        return null;
     }
 
     public boolean openGroup(){
+
         return false;
     }
 
