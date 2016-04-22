@@ -718,11 +718,26 @@ public class DBHelper {
     public void displayAllMessages(String email){
         // display all Messages sent to this user email
         try {
+            System.out.println(" ");
+            System.out.println("These are messages you received: ");
             statement = connection.createStatement();
+            String totalMessagesQuery = "SELECT COUNT(msgID) AS total FROM Message WHERE recipientEmail= '"+email+"'";
+            resultSet = statement.executeQuery(totalMessagesQuery);
+            while (resultSet.next()){
+                int total = resultSet.getInt("total");
+                if (total == 0){
+                    System.out.println("Sorry we did not find any messages for you.");
+                }else if (total == 1){
+                    System.out.println("These is one message for you. ");
+                }else{
+                    System.out.println("These are " + total + " messages for you. ");
+                }
+            }
+
+
             String displayAllMessagesQuery = "SELECT msgID, senderEmail, time_sent," +
                     "msg_subject, msg_body FROM Message WHERE recipientEmail= '"+email+"'";
             resultSet = statement.executeQuery(displayAllMessagesQuery);
-            System.out.println("These are messages you received: ");
 
             while (resultSet.next()){
                 System.out.println("----------------------------------------------------------------------------");
