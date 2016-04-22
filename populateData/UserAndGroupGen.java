@@ -1,4 +1,4 @@
-// package com.company;
+//package com.company; // comment for thoth server
 
 /**
  * Created by Xiaokai on 4/16/2016.

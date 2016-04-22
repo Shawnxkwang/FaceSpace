@@ -660,8 +660,54 @@ public class DBHelper {
         return null; // null if no messages exist
     }
 
-    public void sendMessage(String email1, String email2){
+    public void sendMessage(String email1, String email2, String subject, String body){
         // send message from email1 to email2
+        try {
+            //Timestamp timestamp = Timestamp.from(Calendar.getInstance().getTime().toInstant());
+
+            // get the current largest msgID
+
+            String selectIdQuery = "SELECT NVL(MAX(msgID),0) as MAX_VAL FROM Message";
+            prepStatement = connection.prepareStatement(selectIdQuery);
+            prepStatement.executeQuery();
+            resultSet = prepStatement.getResultSet();
+
+            int msgID = 0;
+
+            while (resultSet.next()){
+                msgID = resultSet.getInt("MAX_VAL");
+
+            }
+
+            msgID++;
+            String sendMsg = "INSERT INTO Message VALUES (?,?,?,?,?,?)";
+            prepStatement = connection.prepareStatement(sendMsg);
+            prepStatement.setInt(1, msgID);
+            prepStatement.setString(2, email1);
+            prepStatement.setString(3, email2);
+            prepStatement.setTimestamp(4,new Timestamp(new java.util.Date().getTime()));
+            prepStatement.setString(5, subject);
+            prepStatement.setString(6, body);
+            prepStatement.executeUpdate();
+            prepStatement.close();
+
+            System.out.println("\nMessage Sent From: " + email1 + " To: " + email2 +"\n");
+            System.out.println("Message ID: : " + msgID +"\n");
+            System.out.println("Subject: " + subject +"\n");
+            System.out.println("Message: " + body +"\n");
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Something Went wrong Sending the Message.");
+        }finally {
+            try{
+                //statement.close();
+                resultSet.close();
+
+            }catch (SQLException e){
+
+            }
+        }
     }
 
     public void displayTopMessagers(ArrayList<User> users){

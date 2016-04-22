@@ -476,6 +476,7 @@ public class Driver {
     public void getDetailedMenuChoice(User two){
 
         String mHistory = dbHelper.openMessageFromEmail(currentUser.getEmail(), two.getEmail());
+        String subject = null;
         String message;
         do {
             System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n -- "+
@@ -487,6 +488,8 @@ public class Driver {
             if(mHistory == null) System.out.println("    You do not have any message history with this person at this time            ");
             else System.out.println(mHistory);
             System.out.println("\n\n----------------------------------------------------------------------------");
+            System.out.println("Enter the Message Subject: ");
+            subject = sc.nextLine();
             System.out.print("Enter your message you want to send (exit = \"*\"): ");
             message = sc.nextLine();
             if (message.equals("*")){
@@ -494,7 +497,7 @@ public class Driver {
                 hold();
                 return;
             }
-            else dbHelper.sendMessage(currentUser.getEmail(),two.getEmail());
+            else dbHelper.sendMessage(currentUser.getEmail(),two.getEmail(), subject, message);
         }while (true);
     }
 

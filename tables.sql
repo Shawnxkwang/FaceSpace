@@ -67,8 +67,3 @@ create table Message (
 	constraints fk_sender foreign key(senderEmail) references UserTable(email),
 	constraints fk_recipient foreign key(recipientEmail) references UserTable(email)
 );
-
-
-
-
-
