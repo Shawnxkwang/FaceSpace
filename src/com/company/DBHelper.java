@@ -679,6 +679,7 @@ public class DBHelper {
 
             }
 
+            // Insert new message
             msgID++;
             String sendMsg = "INSERT INTO Message VALUES (?,?,?,?,?,?)";
             prepStatement = connection.prepareStatement(sendMsg);
