@@ -1,4 +1,5 @@
 drop table UserTable cascade constraints;
+-- UserTable(email, firstName, lastName, birthday)
 create table UserTable (
 	-- userID number(10) not null,
 	email varchar2(128) not null,
@@ -10,6 +11,7 @@ create table UserTable (
 
 
 drop table Friendship cascade constraints;
+-- Friendship(person1, person2, timeInitiated, timeEstablished)
 create table Friendship (
 	person1 varchar2(128) not null,
 	person2 varchar2(128) not null,
@@ -22,6 +24,7 @@ create table Friendship (
 
 
 drop table GroupTable cascade constraints;
+-- GroupTable(groupID, name, description, mLimit)
 create table GroupTable (
 	groupID number(10) not null,
 	name varchar2(64) not null,
@@ -47,6 +50,7 @@ END;
 
 
 drop table Membership cascade constraints;
+-- Membership(groupID, member)
 create table Membership (
 	groupID number(10) not null,
 	member varchar2(128) not null,
@@ -56,6 +60,7 @@ create table Membership (
 );
 
 drop table Message cascade constraints;
+-- Message(msgID, senderEmail, recipientEmail, time_sent, msg_subject, msg_body)
 create table Message (
 	msgID number(10) not null,
 	senderEmail varchar2(128) not null,
