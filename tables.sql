@@ -30,7 +30,10 @@ create table GroupTable (
 	constraints pk_groups primary key(groupID)
 );
 
-CREATE SEQUENCE group_seq;
+Create sequence group_seq start with 1
+increment by 1
+minvalue 1
+maxvalue 10000;
 
 CREATE OR REPLACE TRIGGER make_group_id
 BEFORE INSERT ON GroupTable

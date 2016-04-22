@@ -50,7 +50,6 @@ public class Driver {
 
 
             dbHelper = new DBHelper(conn); // switch null to real connection eventually
-
             while (true) {
                 boolean validUser;
                 //Switch Loop for login and register Menu
@@ -58,6 +57,10 @@ public class Driver {
                 do {
                     validUser = true;
                     switch (loginScreen()) {
+                    	case 0: 
+                    		System.out.println("Thanks for using FaceSpace!");
+                    		System.exit(0);  // quit
+                    			
                         case 1:
                             validUser = logInPrompt();  // false if failed to find email in db
                             break;
@@ -75,6 +78,9 @@ public class Driver {
                             boolean friendsMenu = true;
                             while (friendsMenu){
                                 switch (getFriendMenuChoice()){
+                                	case 0: friendsMenu = false;  //quit
+                                			break;
+                                
                                     case 1: // 1.  Friend Summary
                                         dbHelper.displayFriendSummary(currentUser.getEmail());
                                         hold();
@@ -106,21 +112,27 @@ public class Driver {
                             boolean groupMenu = true;
                             while (groupMenu){
                                 switch (getGroupMenuChoice()){
+                                case 0: groupMenu = false;  //quit
+                    					break;
                                     case 1: //Display My Groups
                                         dbHelper.displayGroups(currentUser.getEmail());
                                         hold();
                                         break;
                                     case 2: // Join a Group Requests
-                                        //dbHelper.addToGroup(currentUser.getEmail(), groupNameEntry());
-                                        hold();
+                                    	groupMenu = !dbHelper.addToGroup(currentUser.getEmail(), groupIDEntry());
+                                    	hold();
                                         break;
                                     case 3: // Open Group
-                                        dbHelper.openGroup();
-                                        hold();
+                                    	groupMenu = !openGroupPrompt();  // if success, stop looping
+                                    	hold();
                                         break;
                                     case 4:
-                                        groupMenu = false;
+                                    	dbHelper.displayTopGroups();
+                                        hold();
                                         break;
+                                    case 5:
+                                    	groupMenu = false;
+                                    	break;
                                 }
                             }
                             break;
@@ -188,14 +200,14 @@ public class Driver {
         System.out.println("----------------------------------------------------------------------------");
         do{
             valid = true;
-
+            System.out.println("||                            0. Quit                                 	  ||");
             System.out.println("||                            1. Log In                                   ||");
             System.out.println("||                            2. Register                                 ||");
             System.out.println("----------------------------------------------------------------------------");
             System.out.print("Enter Option: ");
             try {
                 menuChoice = Integer.parseInt(sc.nextLine());
-                if(menuChoice != 1 && menuChoice != 2) valid = false;
+                if(menuChoice != 1 && menuChoice != 2  && menuChoice != 0) valid = false;
             }catch (NumberFormatException e){
                 valid = false;
             }
@@ -220,8 +232,12 @@ public class Driver {
             System.out.println("||                                   __/ |                                ||");
             System.out.println("||                                  |___/                                 ||");
             System.out.println("----------------------------------------------------------------------------");
+            System.out.println("Quit by entering \"quit\": ");
             System.out.print("Email: ");
             email = sc.nextLine();
+            if(email.equals("quit")){
+            	return false;
+            }
             currentUser = dbHelper.getUser(email);
             if(currentUser == null){    //User does not exist yet with that email
                 System.out.println("\nEmail does not match any Users in the database");
@@ -234,6 +250,8 @@ public class Driver {
 
         return true;
     }
+    
+
 
     public boolean registerPrompt(){
         User user = new User();
@@ -365,6 +383,41 @@ public class Driver {
         } while (!valid);
         return option;
     }
+    
+    public boolean openGroupPrompt(){
+    	Group group = new Group();
+    
+    	boolean valid;
+        String temp;
+        do{
+            valid = true;
+           // System.out.println("Enter quit to stop");
+            System.out.print("Enter Group Name:");
+            temp = sc.nextLine().trim();
+            if(temp.length() == 0) valid = false;
+            else group.setName(temp);
+        }while (!valid);
+
+        do{
+            valid = true;
+            System.out.print("Enter description: ");
+            temp = sc.nextLine().trim();
+            if(temp.length() == 0) valid = false;
+            else group.setDescription(temp);
+        }while (!valid);
+
+        do{
+            valid = true;
+            System.out.print("Enter member number limit: ");
+            temp = sc.nextLine().trim();
+            int n = Integer.parseInt(temp);
+            if(n < 1) valid =false;
+            else group.setMembershipLimit(n);    
+        }while (!valid);
+
+      // currentUser = user;
+        return dbHelper.createGroup(group);	
+    }
 
     public int getGroupMenuChoice(){
         System.out.println("----------------------------------------------------------------------------");
@@ -387,10 +440,10 @@ public class Driver {
         boolean valid;
         do {
             valid = true;
-            System.out.print("Please Enter An Option from above (1-4): ");
+            System.out.print("Please Enter An Option from above (1-5): ");
             try {
                 option = Integer.parseInt(sc.nextLine().trim());
-                if (option <= 0 || option > 4) {
+                if (option < 0 || option > 5) {
                     System.out.println("--> " + option + " is not a valid menu number\n"); valid = false;
                 }
             } catch (NumberFormatException e) {
@@ -409,6 +462,15 @@ public class Driver {
         String groupName = sc.nextLine();
         //ArrayList<String> groups = dbHelper.fetchGroupMatches(groupName);
         return 0;
+    }
+    
+    public long groupIDEntry(){
+    	long groupID = 0;
+    	 dbHelper.displayTopGroups();
+    	 System.out.print("Enter the groupID to join : ");
+    	 groupID = Long.parseLong(sc.nextLine());
+    
+    	return groupID;
     }
 
     public void getDetailedMenuChoice(User two){

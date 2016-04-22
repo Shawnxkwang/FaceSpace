@@ -452,9 +452,11 @@ public class DBHelper {
     public Group getGroup(long groupID){
         //Check  if group exists
         try {
-            statement = connection.createStatement();
+        	// NOTE:
+        	// need to use a new Statement and ResultSet, otherwise would overwrite the caller's (displayGroup())
+            Statement statement = connection.createStatement();
             String checkGroup = "SELECT * FROM GroupTable WHERE groupID ="+ groupID;
-            resultSet = statement.executeQuery(checkGroup);
+            ResultSet resultSet = statement.executeQuery(checkGroup);
             if (resultSet.next()){
                 Group group = new Group();
                 group.setGroupID(groupID);
@@ -468,6 +470,7 @@ public class DBHelper {
             else{
                 statement.close();
                 resultSet.close();
+                System.out.println(" group not exists");
                 return null;                  // no group
             }
         }catch (SQLException e){
@@ -499,18 +502,21 @@ public class DBHelper {
         }catch (SQLException e){
             System.out.println("Something Went wrong adding that group");
         }
+        
+        System.out.println("\n-- Creating Group Succeeds! ---");
+    //    System.out.println(group);
         return true;
     }
 
-    public boolean addToGroup(User user, Group group) {
-        // check if user exists
-        if (getUser(user.getEmail()) == null) {
+    public boolean addToGroup(String email, long groupID) {
+    	// check if user exists
+        if (getUser(email) == null) {
             System.out.println("\n-- USER NOT EXISTS ---\n Failed to add it to the group.");
             System.out.println("----------------------------------------------------------------------------");
             return false;
         }
         // check if group exists
-        if (getGroup(group.getGroupID()) == null) {
+        if (getGroup(groupID) == null) {
             System.out.println("\n-- GROUP NOT EXISTS ---\n Failed to add it to the group.");
             System.out.println("----------------------------------------------------------------------------");
             return false;
@@ -520,7 +526,7 @@ public class DBHelper {
         try {
             statement = connection.createStatement();
             String checkExist = "SELECT * FROM Membership " +
-                    "WHERE groupID=" + group.getGroupID() + " AND member='" + user.getEmail() + "'";
+                    "WHERE groupID=" + groupID + " AND member='" + email + "'";
             resultSet = statement.executeQuery(checkExist);
             if (resultSet.next()) {
                 System.out.println("The user is already in the group.");
@@ -528,41 +534,90 @@ public class DBHelper {
             } else {
                 String inputQuery = "INSERT INTO Membership VALUES (?,?)";
                 prepStatement = connection.prepareStatement(inputQuery);
-                prepStatement.setLong(1, group.getGroupID());
-                prepStatement.setString(2, user.getEmail());
+                prepStatement.setLong(1, groupID);
+                prepStatement.setString(2, email);
                 prepStatement.executeUpdate();
                 prepStatement.close();
+                
+                System.out.println("You are in group " + groupID +"! ");
                 return true;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Something Went wrong adding that user to the group");
             return false;
+        }finally{
+        	try {
+				statement.close();
+				resultSet.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
         }
-
+    }
+    
+    public boolean addToGroup(User user, Group group) {
+    	return addToGroup(user.getEmail(),  group.getGroupID());
     }
 
     public void displayGroups(String email){
         try {
             statement = connection.createStatement();
-            String groupQuery = "SELECT DISTINCT groupID FROM Membership WHERE member="+email;
+            String groupQuery = "SELECT DISTINCT groupID FROM Membership WHERE member= '"+email +"'";
             resultSet = statement.executeQuery(groupQuery);
-            if (resultSet.next()){
-                do{
-                    Group group = getGroup(resultSet.getLong(1));
-                    System.out.println(group.toString());
-                }while (resultSet.next());
+            
+            int count = 0;
+            while (resultSet.next()){
+            	count++;
+            	System.out.println("\n--------- My Group " +count+ " ---------\n");
+            	 Group group = getGroup(resultSet.getLong(1));
+                 System.out.println(group.toString());
             }
-            else System.out.println("\nYou are not a member of any groups\n");
-
+            
+            if( count==0){
+            	System.out.println("\nYou are not a member of any groups\n");
+            }
+            
         }catch (SQLException e){
             e.printStackTrace();
+        }finally{
+        	try {
+				statement.close();
+				resultSet.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
         }
     }
 
     public void displayTopGroups(){
+    	// currently display all groups
+    	 try {
+             statement = connection.createStatement();
+             String groupQuery = "SELECT * FROM GroupTable";
+             resultSet = statement.executeQuery(groupQuery);
+             
+             while (resultSet.next()){
+            	 Long id = resultSet.getLong(1);
+                 String name = resultSet.getString(2);
+                 System.out.println("ID: " + id+ ", group Name: "+ name );
+             }
+             
+//             if (resultSet.next()){
+//                 do{
+//                     Long id = resultSet.getLong(1);
+//                     String name = resultSet.getString(2);
+//                     System.out.println("ID: " + id+ ", group Name: "+ name );
+//                 }while (resultSet.next());
+//             }
 
+         }catch (SQLException e){
+             e.printStackTrace();
+         }
     }
 
     public ArrayList<String> fetchGroupMatches(){
