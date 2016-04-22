@@ -187,6 +187,7 @@ public class Driver {
     public int loginScreen(){
         int menuChoice = 0;
         boolean valid;
+        System.out.println("");
         System.out.println("----------------------------------------------------------------------------");
         System.out.println("||                                                                        ||");
         System.out.println("||      ______                _____                        __   ___       ||");
