@@ -707,6 +707,7 @@ public class DBHelper {
 
     public ArrayList<User> getRecentMessages(String email){
         // displays Recent 5 Messages given a users email
+        //TODO
         return null;
     }
 
@@ -834,6 +835,7 @@ public class DBHelper {
 
     public void displayTopMessagers(ArrayList<User> users){
         // display these users by top #  of messages sent to these users
+        //TODO
     }
 
     public void displayAllMessages(String email){
@@ -897,7 +899,7 @@ public class DBHelper {
     /////////////////////////////////////////////////////////////////
 
     public void searchUser(Scanner sc){
-
+        //TODO
         System.out.println("Please Enter The Name of the User you are looking for: ");
         String searchTerm = sc.nextLine();
 
