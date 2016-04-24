@@ -23,6 +23,7 @@ public class DBHelper {
     }
 
 
+
     /////////////////////////////////////////////////////////////////
     // User Functions
     /////////////////////////////////////////////////////////////////
@@ -647,7 +648,61 @@ public class DBHelper {
 
     public void displayRecentMessages(String email){
         // displays Recent 5 Messages given a users email
+        try {
+            System.out.println(" ");
+            System.out.println("These are messages you received: ");
+            statement = connection.createStatement();
+            String totalMessagesQuery = "SELECT COUNT(msgID) AS total FROM Message WHERE recipientEmail= '"+email+"'";
+            resultSet = statement.executeQuery(totalMessagesQuery);
+            while (resultSet.next()){
+                int total = resultSet.getInt("total");
+                if (total == 0){
+                    System.out.println("Sorry we did not find any messages for you.");
+                }else if (total <= 5){
+                    System.out.println("There are " + total + " recent messages for you. ");
+                }else if (total > 5){
+                    System.out.println("These are 5 recent messages for you. ");
+                }else if (total < 0){
+                    System.out.println("This is not possible! ");
+                }
+            }
 
+
+            String displayAllMessagesQuery = "SELECT msgID, senderEmail, time_sent," +
+                    "msg_subject, msg_body FROM Message WHERE recipientEmail= '"+email+"' AND ROWNUM <= 5 " +
+                    "ORDER BY time_sent DESC";
+            resultSet = statement.executeQuery(displayAllMessagesQuery);
+
+            while (resultSet.next()){
+                System.out.println("----------------------------------------------------------------------------");
+                int id = resultSet.getInt("msgID");
+                String sender = resultSet.getString("senderEmail");
+                Date date = resultSet.getDate("time_sent");
+                Time time = resultSet.getTime("time_sent");
+                String sub = resultSet.getString("msg_subject");
+                String body = resultSet.getString("msg_body");
+                System.out.println("Time: " + date + " " + time +"                    " + "ID: "+ id);
+                System.out.println("Sender: " + sender);
+                System.out.println("Subject: " + sub);
+                System.out.println("Message: " + body);
+
+            }
+
+            System.out.println("----------------------------------------------------------------------------");
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally{
+            try {
+                statement.close();
+                resultSet.close();
+            } catch (SQLException e) {
+
+                e.printStackTrace();
+            }
+
+        }
     }
 
     public ArrayList<User> getRecentMessages(String email){
@@ -728,9 +783,9 @@ public class DBHelper {
                 if (total == 0){
                     System.out.println("Sorry we did not find any messages for you.");
                 }else if (total == 1){
-                    System.out.println("These is one message for you. ");
+                    System.out.println("There is one message for you. ");
                 }else{
-                    System.out.println("These are " + total + " messages for you. ");
+                    System.out.println("There are " + total + " messages for you. ");
                 }
             }
 
@@ -781,7 +836,10 @@ public class DBHelper {
         String searchTerm = sc.nextLine();
 
         // displays all users similar to name
-
+        String[] keyWords = searchTerm.split(" ");
+        for (int i = 0; i < keyWords.length; i++) {
+            System.out.println(keyWords[i]);
+        }
 
     }
 
