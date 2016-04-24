@@ -712,11 +712,13 @@ public class DBHelper {
 
     
     public String openMessageFromEmail(String email1, String email2){
-        // get all messages from email1 to email2
+        // get all messages from email2 to email1
+        StringBuilder history = new StringBuilder();
+
         String mHistory = null;
         try {
             System.out.println(" ");
-            System.out.println("These are messages you received: ");
+
             statement = connection.createStatement();
             String totalMessagesQuery = "SELECT COUNT(msgID) AS total FROM Message WHERE recipientEmail= '"+email1+"' AND senderEmail = '"+email2+"'";
             resultSet = statement.executeQuery(totalMessagesQuery);
@@ -725,12 +727,6 @@ public class DBHelper {
                 if (total == 0){
                     System.out.println("Sorry we did not find any messages for you.");
 
-                }else if (total <= 5){
-                    System.out.println("There are " + total + " recent messages for you. ");
-                    mHistory = "have messages";
-                }else if (total > 5){
-                    System.out.println("These are 5 recent messages for you. ");
-                    mHistory = "have messages";
                 }else if (total < 0){
                     System.out.println("This is not possible! ");
                 }
@@ -743,21 +739,28 @@ public class DBHelper {
             resultSet = statement.executeQuery(openMessagesQuery);
 
             while (resultSet.next()){
-                System.out.println("----------------------------------------------------------------------------");
+
+                //System.out.println("----------------------------------------------------------------------------");
                 int id = resultSet.getInt("msgID");
                 String sender = resultSet.getString("senderEmail");
                 Date date = resultSet.getDate("time_sent");
                 Time time = resultSet.getTime("time_sent");
                 String sub = resultSet.getString("msg_subject");
                 String body = resultSet.getString("msg_body");
+
+                history.append("Sender: ").append(email2).append("\n").append("Receiver: ").append(email1).append("\n");
+                history.append("Time: ").append(time).append("\n").append("Subject: ").append(sub).append("\n");
+                history.append("Body: ").append(body).append("\n");
+                history.append("----------------------------------------------------------------------------\n");
+                /*
                 System.out.println("Time: " + date + " " + time +"                    " + "ID: "+ id);
                 System.out.println("Sender: " + sender);
                 System.out.println("Subject: " + sub);
                 System.out.println("Message: " + body);
-
+                */
             }
 
-            System.out.println("----------------------------------------------------------------------------");
+            //System.out.println("----------------------------------------------------------------------------");
 
 
         }catch (SQLException e){
@@ -774,6 +777,7 @@ public class DBHelper {
 
 
         }
+        mHistory = history.toString();
         return mHistory;
     }
 
