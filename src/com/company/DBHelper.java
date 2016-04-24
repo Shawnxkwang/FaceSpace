@@ -713,14 +713,34 @@ public class DBHelper {
     
     public String openMessageFromEmail(String email1, String email2){
         // get all messages from email1 to email2
+        String mHistory = null;
         try {
             System.out.println(" ");
             System.out.println("These are messages you received: ");
+            statement = connection.createStatement();
+            String totalMessagesQuery = "SELECT COUNT(msgID) AS total FROM Message WHERE recipientEmail= '"+email1+"' AND senderEmail = '"+email2+"'";
+            resultSet = statement.executeQuery(totalMessagesQuery);
+            while (resultSet.next()){
+                int total = resultSet.getInt("total");
+                if (total == 0){
+                    System.out.println("Sorry we did not find any messages for you.");
 
-            String displayAllMessagesQuery = "SELECT msgID, senderEmail, time_sent," +
-                    "msg_subject, msg_body FROM Message WHERE recipientEmail= '"+email2+"' AND senderEmail = '"+email1+"' " +
-                    "ORDER BY time_sent DESC";
-            resultSet = statement.executeQuery(displayAllMessagesQuery);
+                }else if (total <= 5){
+                    System.out.println("There are " + total + " recent messages for you. ");
+                    mHistory = "have messages";
+                }else if (total > 5){
+                    System.out.println("These are 5 recent messages for you. ");
+                    mHistory = "have messages";
+                }else if (total < 0){
+                    System.out.println("This is not possible! ");
+                }
+            }
+
+
+
+            String openMessagesQuery = "SELECT msgID, senderEmail, time_sent," +
+                    "msg_subject, msg_body FROM Message WHERE recipientEmail= '"+email2+"' AND senderEmail = '"+email1+"' ORDER BY time_sent" ;
+            resultSet = statement.executeQuery(openMessagesQuery);
 
             while (resultSet.next()){
                 System.out.println("----------------------------------------------------------------------------");
@@ -743,6 +763,7 @@ public class DBHelper {
         }catch (SQLException e){
             e.printStackTrace();
         }finally{
+
             try {
                 statement.close();
                 resultSet.close();
@@ -751,8 +772,9 @@ public class DBHelper {
                 e.printStackTrace();
             }
 
+
         }
-        return null; // null if no messages exist
+        return mHistory;
     }
 
     public void sendMessage(String email1, String email2, String subject, String body){
