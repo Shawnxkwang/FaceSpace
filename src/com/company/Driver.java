@@ -161,8 +161,8 @@ public class Driver {
                                         else System.out.println("\nThat email address does not exist in our database\n");
                                         break;
                                     case 3: // Top Messagers
-                                        collectTopMessageParameters();
-                                        dbHelper.displayTopMessagers(collectTopMessageParameters());
+                                        //collectTopMessageParameters();
+                                        //dbHelper.displayTopMessagers(collectTopMessageParameters());
                                         break;
                                     case 4: // Display Detailed Message History
                                         dbHelper.displayAllMessages(currentUser.getEmail());
