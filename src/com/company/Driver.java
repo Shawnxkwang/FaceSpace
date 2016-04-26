@@ -6,6 +6,7 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -29,6 +30,7 @@ public class Driver {
     //  login to the DB.
     private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
     private static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
+
     //xiw69
     //3799662
     private static final String USER = "xiw69";
@@ -53,27 +55,27 @@ public class Driver {
             while (true) {
                 boolean validUser;
                 //Switch Loop for login and register Menu
-
                 do {
                     validUser = true;
                     switch (loginScreen()) {
-                    	case 0: 
-                    		System.out.println("Thanks for using FaceSpace!");
-                    		System.exit(0);  // quit
-                    			
                         case 1:
                             validUser = logInPrompt();  // false if failed to find email in db
                             break;
                         case 2:
                             validUser = registerPrompt();  //false if failed to register
                             break;
+                        case 3:
+                            System.out.println("\nThanks for using FaceSpace!\n");
+                            System.exit(0);  // quit
                     }
                 } while (!validUser);
 
                 // Switch Loop for main Menu
                 while (validUser){
                     switch (getMenuChoice()){
-
+                        case 0:
+                            dbHelper.debug();
+                            hold();
                         case 1:  // Friend Menu
                             boolean friendsMenu = true;
                             while (friendsMenu){
@@ -90,7 +92,7 @@ public class Driver {
                                         hold();
                                         break;
                                     case 3:
-                                        dbHelper.createRequest(currentUser.getEmail(),friendAddEntry());
+                                        dbHelper.createRequest(currentUser.getEmail(),friendAddEntry().toLowerCase());
                                         hold();
                                         break;
                                     case 4:
@@ -112,25 +114,33 @@ public class Driver {
                             boolean groupMenu = true;
                             while (groupMenu){
                                 switch (getGroupMenuChoice()){
-                                case 0: groupMenu = false;  //quit
+                                    case 0: groupMenu = false;  //quit
                     					break;
-                                    case 1: //Display My Groups
-                                        dbHelper.displayGroups(currentUser.getEmail());
+                                    case 1:
+                                        createGroupPrompt();
                                         hold();
                                         break;
                                     case 2: // Join a Group Requests
-                                    	groupMenu = !dbHelper.addToGroup(currentUser.getEmail(), groupIDEntry());
+                                        System.out.print("\nEnter Group Name You'd Like To Join : ");
+                                        Group group1 = dbHelper.searchGroup(sc.nextLine().toUpperCase(), sc);
+                                        if(group1 != null) dbHelper.addToGroup(currentUser.getEmail(), group1);
                                     	hold();
                                         break;
                                     case 3: // Open Group
-                                    	groupMenu = !openGroupPrompt();  // if success, stop looping
+                                        System.out.print("\nEnter Group name : ");
+                                        Group group2 = dbHelper.searchGroup(sc.nextLine().toUpperCase(), sc);
+                                        if(group2 != null) dbHelper.printGroupContents(group2.getGroupID());
                                     	hold();
                                         break;
-                                    case 4:
-                                    	dbHelper.displayTopGroups();
+                                    case 4: //Display My Groups
+                                        dbHelper.displayMyGroups(currentUser.getEmail());
                                         hold();
                                         break;
                                     case 5:
+                                        dbHelper.displayTopGroups();
+                                        hold();
+                                        break;
+                                    case 6:
                                     	groupMenu = false;
                                     	break;
                                 }
@@ -151,7 +161,8 @@ public class Driver {
                                         else System.out.println("\nThat email address does not exist in our database\n");
                                         break;
                                     case 3: // Top Messagers
-                                        dbHelper.displayTopMessagers(collectUsers());
+                                        collectTopMessageParameters();
+                                        dbHelper.displayTopMessagers(collectTopMessageParameters());
                                         break;
                                     case 4: // Display Detailed Message History
                                         dbHelper.displayAllMessages(currentUser.getEmail());
@@ -200,9 +211,9 @@ public class Driver {
         System.out.println("----------------------------------------------------------------------------");
         do{
             valid = true;
-            System.out.println("||                            0. Quit                                 	  ||");
             System.out.println("||                            1. Log In                                   ||");
             System.out.println("||                            2. Register                                 ||");
+            System.out.println("||                            3. Exit Program                         	  ||");
             System.out.println("----------------------------------------------------------------------------");
             System.out.print("Enter Option: ");
             try {
@@ -232,12 +243,9 @@ public class Driver {
             System.out.println("||                                   __/ |                                ||");
             System.out.println("||                                  |___/                                 ||");
             System.out.println("----------------------------------------------------------------------------");
-            System.out.println("Quit by entering \"quit\": ");
             System.out.print("Email: ");
-            email = sc.nextLine();
-            if(email.equals("quit")){
-            	return false;
-            }
+            email = sc.nextLine().toLowerCase();
+            if(email.equals("quit")) return false;
             currentUser = dbHelper.getUser(email);
             if(currentUser == null){    //User does not exist yet with that email
                 System.out.println("\nEmail does not match any Users in the database");
@@ -288,7 +296,7 @@ public class Driver {
             System.out.print("Enter Valid Email Address: ");
             temp = sc.nextLine().trim();
             if (!isValidEmailAddress(temp)) valid = false;
-            else user.setEmail(temp);
+            else user.setEmail(temp.toLowerCase());
         }while (!valid);
 
         do{
@@ -341,7 +349,7 @@ public class Driver {
             System.out.print("Please Enter An Option from above (1-6): ");
             try {
                 option = Integer.parseInt(sc.nextLine().trim());
-                if (option <= 0 || option > 6) {
+                if (option < 0 || option > 6) {                                                                             /// FIXX LATER
                     System.out.println("--> " + option + " is not a valid menu number\n"); valid = false;
                 }
             } catch (NumberFormatException e) {
@@ -384,15 +392,32 @@ public class Driver {
         return option;
     }
     
-    public boolean openGroupPrompt(){
+    public boolean createGroupPrompt(){
     	Group group = new Group();
-    
-    	boolean valid;
+        /*
+          _   _                  ____
+         | \ | | _____      __  / ___|_ __ ___  _   _ _ __
+         |  \| |/ _ \ \ /\ / / | |  _| '__/ _ \| | | | '_ \
+         | |\  |  __/\ V  V /  | |_| | | | (_) | |_| | |_) |
+         |_| \_|\___| \_/\_/    \____|_|  \___/ \__,_| .__/
+                                                     |_|
+         */
+
+        System.out.println("----------------------------------------------------------------------------");
+        System.out.println("||             _   _                  ____                                ||");
+        System.out.println("||            | \\ | | _____      __  / ___|_ __ ___  _   _ _ __           ||");
+        System.out.println("||            |  \\| |/ _ \\ \\ /\\ / / | |  _| '__/ _ \\| | | | '_ \\          ||");
+        System.out.println("||            | |\\  |  __/\\ V  V /  | |_| | | | (_) | |_| | |_) |         ||");
+        System.out.println("||            |_| \\_|\\___| \\_/\\_/    \\____|_|  \\___/ \\__,_| .__/          ||");
+        System.out.println("||                                                        |_|             ||");
+        System.out.println("----------------------------------------------------------------------------");
+
+        boolean valid;
         String temp;
         do{
             valid = true;
            // System.out.println("Enter quit to stop");
-            System.out.print("Enter Group Name:");
+            System.out.print("Enter Group Name: ");
             temp = sc.nextLine().trim();
             if(temp.length() == 0) valid = false;
             else group.setName(temp);
@@ -400,7 +425,7 @@ public class Driver {
 
         do{
             valid = true;
-            System.out.print("Enter description: ");
+            System.out.print("Enter Group Description: ");
             temp = sc.nextLine().trim();
             if(temp.length() == 0) valid = false;
             else group.setDescription(temp);
@@ -408,14 +433,19 @@ public class Driver {
 
         do{
             valid = true;
-            System.out.print("Enter member number limit: ");
+            System.out.print("Enter Member Limit: ");
             temp = sc.nextLine().trim();
-            int n = Integer.parseInt(temp);
-            if(n < 1) valid =false;
-            else group.setMembershipLimit(n);    
+            try{
+                int n = Integer.parseInt(temp);
+                if(n < 1) valid = false;
+                else group.setMembershipLimit(n);
+            }catch (NumberFormatException e){
+                valid = false;
+            }
         }while (!valid);
 
       // currentUser = user;
+
         return dbHelper.createGroup(group);	
     }
 
@@ -430,11 +460,12 @@ public class Driver {
         System.out.println("||                                           | |                          ||");
         System.out.println("||                                           |_|                          ||");
         System.out.println("----------------------------------------------------------------------------");
-        System.out.println("||                        1.  Display My Groups                           ||");
+        System.out.println("||                        1.  Create A Group                              ||");
         System.out.println("||                        2.  Join A Group                                ||");
         System.out.println("||                        3.  Open A Group                                ||");
-        System.out.println("||                        4.  Display Top Groups                          ||");
-        System.out.println("||                        5.  Return To Main Menu                         ||");
+        System.out.println("||                        4.  Display My Groups                           ||");
+        System.out.println("||                        5.  Display Top Groups                          ||");
+        System.out.println("||                        6.  Return To Main Menu                         ||");
         System.out.println("----------------------------------------------------------------------------");
         int option = 0;
         boolean valid;
@@ -443,7 +474,7 @@ public class Driver {
             System.out.print("Please Enter An Option from above (1-5): ");
             try {
                 option = Integer.parseInt(sc.nextLine().trim());
-                if (option < 0 || option > 5) {
+                if (option < 0 || option > 6) {
                     System.out.println("--> " + option + " is not a valid menu number\n"); valid = false;
                 }
             } catch (NumberFormatException e) {
@@ -455,46 +486,40 @@ public class Driver {
 
     public long groupNameEntry(){
         // Top 50 Groups
-        dbHelper.displayTopGroups();
-        // Display Groups part of the current user
-        dbHelper.displayGroups(currentUser.getEmail());
-        System.out.print("Enter the group name : ");
-        String groupName = sc.nextLine();
-        //ArrayList<String> groups = dbHelper.fetchGroupMatches(groupName);
+
+
         return 0;
-    }
-    
-    public long groupIDEntry(){
-    	long groupID = 0;
-    	 dbHelper.displayTopGroups();
-    	 System.out.print("Enter the groupID to join : ");
-    	 groupID = Long.parseLong(sc.nextLine());
-    
-    	return groupID;
     }
 
     public void getDetailedMenuChoice(User two){
 
-        String mHistory = dbHelper.openMessageFromEmail(currentUser.getEmail(), two.getEmail());
-        String message;
+        String messageSubject,messageBody;
+
         do {
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n -- "+
-                    currentUser.getFirstName()+" "+currentUser.getLastName());
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n -- "+ currentUser.getFirstName()+" "+currentUser.getLastName());
             System.out.println("    "+two.getFirstName()+" "+two.getLastName());
             System.out.println("----------------------------------------------------------------------------");
-            System.out.println("                                Messages                                    ");
+            System.out.println("                Messages (Refreshes After Every Message Sent)               ");
             System.out.println("----------------------------------------------------------------------------");
-            if(mHistory == null) System.out.println("    You do not have any message history with this person at this time            ");
-            else System.out.println(mHistory);
+            dbHelper.displayConversation(currentUser, two);
             System.out.println("\n\n----------------------------------------------------------------------------");
-            System.out.print("Enter your message you want to send (exit = \"*\"): ");
-            message = sc.nextLine();
-            if (message.equals("*")){
-                System.out.println("\n\n\n\n\n");
-                hold();
-                return;
+            System.out.print("Enter Message Subject (exit = \"*\"): ");
+            messageSubject = sc.nextLine();
+            if (messageSubject.equals("*")){
+                System.out.println("\n\n\n\n\n"); hold(); return;
             }
-            else dbHelper.sendMessage(currentUser.getEmail(),two.getEmail());
+            System.out.print("Enter Message Body    (exit = \"*\"): ");
+            messageBody = sc.nextLine();
+            if (messageSubject.equals("*")){
+                System.out.println("\n\n\n\n\n"); hold(); return;
+            }
+            Message m = new Message();
+            m.setSenderEmail(currentUser.getEmail());
+            m.setRecipientEmail(two.getEmail());
+            m.setMsgSubject(messageSubject);
+            m.setMsgBody(messageBody);
+            m.setTimeSent(Calendar.getInstance().getTime());
+            dbHelper.sendMessage(m);
         }while (true);
     }
 
@@ -517,10 +542,10 @@ public class Driver {
             // ____________________________________________________________________________________________
             // 2      First Last                                                   Message here fjdsjn...
             //        email@email.com
-            dbHelper.displayRecentMessages(currentUser.getEmail());
+            dbHelper.displayUserRecentMessages(currentUser);
         }
         System.out.println("----------------------------------------------------------------------------");
-        System.out.println("||                  1.  Open Messages From Conversation Number            ||");
+        System.out.println("||                  1.  Open Messages From Recent Conversations           ||");
         System.out.println("||                  2.  Open Messages From An Email                       ||");
         System.out.println("||                  3.  Top Messagers                                     ||");
         System.out.println("||                  4.  Display Detailed Message History                  ||");
@@ -576,6 +601,7 @@ public class Driver {
         return two;
     }
 
+
     public String messageEmailEntry(){
         boolean valid;
         String temp;
@@ -589,24 +615,13 @@ public class Driver {
         return temp;
     }
 
-    public ArrayList<User> collectUsers(){
+    public ArrayList<User> collectTopMessageParameters(){
         ArrayList<User> users = new ArrayList<User>();
         String tempEmail;
 
-        int count = 1;
-        System.out.println("\n\n\n -- User Entry\n");
-        System.out.println("  Enter users you want to compare message counts with (F to finish entry)");
+        System.out.println("\n\n\n -- Parameter Entry\n");
         System.out.println("----------------------------------------------------------------------------");
         do{
-            System.out.print("Enter Email Of User "+count+": ");
-            tempEmail = sc.nextLine();
-            if(tempEmail.equals("F")) return users;
-            else if (!isValidEmailAddress(tempEmail)) System.out.println("\nInvalid Email Address Format\n");
-            else if(dbHelper.getUser(tempEmail) == null) System.out.println("\nThat email is not contained in the database\n");
-            else {
-                users.add(dbHelper.getUser(tempEmail));
-                count++;
-            }
 
         }while (true);
     }

@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be40d0a8-a90b-4177-81a0-190bebad00b9" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/company/Message.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FaceSpace/com/company/DBHelper.class" afterPath="$PROJECT_DIR$/out/production/FaceSpace/com/company/DBHelper.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FaceSpace/com/company/Driver.class" afterPath="$PROJECT_DIR$/out/production/FaceSpace/com/company/Driver.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/DBHelper.java" afterPath="$PROJECT_DIR$/src/com/company/DBHelper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/Driver.java" afterPath="$PROJECT_DIR$/src/com/company/Driver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/Group.java" afterPath="$PROJECT_DIR$/src/com/company/Group.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tables.sql" afterPath="$PROJECT_DIR$/tables.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -30,33 +34,63 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="Driver.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/company/Driver.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="3.9069767" vertical-offset="765" max-vertical-offset="9300">
+              <caret line="163" column="70" selection-start-line="163" selection-start-column="70" selection-end-line="163" selection-end-column="70" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#friendAddEntry#0;class#Driver#0" expanded="false" />
+                <element signature="method#messageEmailEntry#0;class#Driver#0" expanded="false" />
+                <element signature="method#isValidEmailAddress#0;class#Driver#0" expanded="false" />
+                <element signature="method#isValidDate#0;class#Driver#0" expanded="false" />
+                <element signature="method#hold#0;class#Driver#0" expanded="false" />
+                <marker date="1461691157000" expanded="true" signature="4915:6955" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="DBHelper.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/company/DBHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2032" max-vertical-offset="3030">
-              <caret line="576" column="20" selection-start-line="576" selection-start-column="20" selection-end-line="576" selection-end-column="20" />
+            <state vertical-scroll-proportion="-9.851851" vertical-offset="3649" max-vertical-offset="5460">
+              <caret line="955" column="57" selection-start-line="955" selection-start-column="57" selection-end-line="955" selection-end-column="57" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#getUser#0;class#DBHelper#0" expanded="false" />
-                <element signature="method#createUser#0;class#DBHelper#0" expanded="false" />
                 <element signature="method#dropUser#0;class#DBHelper#0" expanded="false" />
                 <element signature="method#createRequest#0;class#DBHelper#0" expanded="false" />
                 <element signature="method#isFriend#0;class#DBHelper#0" expanded="false" />
-                <element signature="method#establishFriend#0;class#DBHelper#0" expanded="false" />
                 <element signature="method#pendingFriendExists#0;class#DBHelper#0" expanded="false" />
                 <element signature="method#createPendingFriend#0;class#DBHelper#0" expanded="false" />
                 <element signature="method#acceptRequest#0;class#DBHelper#0" expanded="false" />
                 <element signature="method#displayRequests#0;class#DBHelper#0" expanded="false" />
                 <element signature="method#threeDegrees#0;class#DBHelper#0" expanded="false" />
-                <element signature="method#getGroup#0;class#DBHelper#0" expanded="false" />
+                <element signature="method#getGroupByID#0;class#DBHelper#0" expanded="false" />
                 <element signature="method#createGroup#0;class#DBHelper#0" expanded="false" />
                 <element signature="method#addToGroup#0;class#DBHelper#0" expanded="false" />
-                <element signature="e#24475#24483#0" expanded="true" />
-                <element signature="method#getGroupMessages#0;class#DBHelper#0" expanded="false" />
-                <element signature="method#sendMessage#0;class#DBHelper#0" expanded="false" />
-                <element signature="method#displayAllMessages#0;class#DBHelper#0" expanded="false" />
-                <element signature="method#searchUser#0;class#DBHelper#0" expanded="false" />
-                <element signature="method#debug#0;class#DBHelper#0" expanded="false" />
+                <element signature="method#printGroupContents#0;class#DBHelper#0" expanded="false" />
+                <element signature="method#searchGroup#0;class#DBHelper#0" expanded="false" />
+                <element signature="e#27710#27717#0" expanded="true" />
+                <element signature="method#displayMyGroups#0;class#DBHelper#0" expanded="false" />
+                <element signature="method#displayTopGroups#0;class#DBHelper#0" expanded="false" />
+                <element signature="method#displayConversation#0;class#DBHelper#0" expanded="false" />
+                <marker date="1461689860000" expanded="true" signature="33236:34221" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Message.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/company/Message.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="463" max-vertical-offset="855">
+              <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1304#1305#0" expanded="true" />
+                <element signature="e#1338#1339#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -65,53 +99,10 @@
       <file leaf-file-name="Group.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/company/Group.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="652" max-vertical-offset="1050">
-              <caret line="49" column="18" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="18" />
-              <folding>
-                <element signature="e#425#426#0" expanded="true" />
-                <element signature="e#455#456#0" expanded="true" />
-                <element signature="e#499#500#0" expanded="true" />
-                <element signature="e#537#538#0" expanded="true" />
-                <element signature="e#575#576#0" expanded="true" />
-                <element signature="e#609#610#0" expanded="true" />
-                <element signature="e#663#664#0" expanded="true" />
-                <element signature="e#709#710#0" expanded="true" />
-                <element signature="e#740#741#0" expanded="true" />
-                <element signature="e#767#768#0" expanded="true" />
-                <element signature="e#807#808#0" expanded="true" />
-                <element signature="e#839#840#0" expanded="true" />
-                <element signature="e#879#880#0" expanded="true" />
-                <element signature="e#908#909#0" expanded="true" />
-                <element signature="e#959#960#0" expanded="true" />
-                <element signature="e#995#996#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Driver.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/company/Driver.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-43.88889" vertical-offset="75" max-vertical-offset="3855">
-              <caret line="113" column="42" selection-start-line="113" selection-start-column="42" selection-end-line="113" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="430" max-vertical-offset="1155">
+              <caret line="53" column="18" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#loginScreen#0;class#Driver#0" expanded="false" />
-                <element signature="method#logInPrompt#0;class#Driver#0" expanded="false" />
-                <element signature="method#registerPrompt#0;class#Driver#0" expanded="false" />
-                <element signature="method#friendAddEntry#0;class#Driver#0" expanded="false" />
-                <element signature="method#getFriendMenuChoice#0;class#Driver#0" expanded="false" />
-                <element signature="method#getDetailedMenuChoice#0;class#Driver#0" expanded="false" />
-                <element signature="method#getMessageMenuChoice#0;class#Driver#0" expanded="false" />
-                <element signature="method#chooseConversation#0;class#Driver#0" expanded="false" />
-                <element signature="method#messageEmailEntry#0;class#Driver#0" expanded="false" />
-                <element signature="method#collectUsers#0;class#Driver#0" expanded="false" />
-                <element signature="method#isValidEmailAddress#0;class#Driver#0" expanded="false" />
-                <element signature="method#isValidDate#0;class#Driver#0" expanded="false" />
-                <element signature="method#hold#0;class#Driver#0" expanded="false" />
-                <marker date="1461205686000" expanded="false" signature="2734:4372" placeholder="..." />
-                <marker date="1461205686000" expanded="true" signature="4449:5564" placeholder="..." />
-                <marker date="1461205686000" expanded="true" signature="5641:7239" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -127,11 +118,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tables.sql" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tables.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tables.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.21305183" vertical-offset="294" max-vertical-offset="1155">
-              <caret line="27" column="31" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1455">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -157,10 +148,16 @@
         <option value="$PROJECT_DIR$/src/com/company/DataGenerator.java" />
         <option value="$PROJECT_DIR$/src/com/company/User.java" />
         <option value="$PROJECT_DIR$/src/com/company/Main.java" />
+        <option value="$PROJECT_DIR$/src/com/company/Airline.java" />
+        <option value="$PROJECT_DIR$/src/com/company/EdgeNode.java" />
+        <option value="$PROJECT_DIR$/src/com/company/MyAdjacencyList.java" />
+        <option value="$PROJECT_DIR$/src/com/company/VertexNode.java" />
+        <option value="$PROJECT_DIR$/src/com/company/GraphHelper.java" />
+        <option value="$PROJECT_DIR$/tables.sql" />
         <option value="$PROJECT_DIR$/src/com/company/Group.java" />
+        <option value="$PROJECT_DIR$/src/com/company/Message.java" />
         <option value="$PROJECT_DIR$/src/com/company/DBHelper.java" />
         <option value="$PROJECT_DIR$/src/com/company/Driver.java" />
-        <option value="$PROJECT_DIR$/tables.sql" />
       </list>
     </option>
   </component>
@@ -222,6 +219,20 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FaceSpace" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FaceSpace" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="company" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
@@ -235,13 +246,18 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/IdeaProjects/Assig4" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="recentsLimit" value="5" />
     <property name="dynamic.classpath" value="false" />
     <property name="FullScreen" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/com/company" />
+    </key>
   </component>
   <component name="RunManager" selected="Application.Driver">
     <configuration default="false" name="Driver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -546,7 +562,13 @@
       <option name="project" value="LOCAL" />
       <updated>1461252776749</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Auto inc">
+      <created>1461253421564</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1461253421564</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -564,19 +586,19 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3612218" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3559097" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22421876" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27091634" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44921875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7264276" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
     <layout-to-restore>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -625,11 +647,12 @@
     <MESSAGE value="Added framework for all functions in driver" />
     <MESSAGE value="Framework complete. Populate new methods in DBHelper to finish" />
     <MESSAGE value="Slight changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Slight changes" />
+    <MESSAGE value="Auto inc" />
+    <option name="LAST_COMMIT_MESSAGE" value="Auto inc" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="6" />
+      <option name="time" value="8" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -638,28 +661,141 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/com/company/Group.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="288" max-vertical-offset="1305">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="660">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/DBHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4215">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#dropUser#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#createRequest#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#isFriend#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#pendingFriendExists#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#createPendingFriend#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#acceptRequest#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayRequests#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#threeDegrees#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#getGroupByID#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#createGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#addToGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#printGroupContents#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#searchGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="e#27710#27717#0" expanded="true" />
+            <element signature="method#displayMyGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayTopGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayConversation#0;class#DBHelper#0" expanded="false" />
+            <marker date="1461689860000" expanded="true" signature="33236:34221" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/Group.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="652" max-vertical-offset="1050">
+          <caret line="49" column="18" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/Driver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3330" max-vertical-offset="5625">
+          <caret line="346" column="47" selection-start-line="346" selection-start-column="47" selection-end-line="346" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#friendAddEntry#0;class#Driver#0" expanded="false" />
+            <element signature="method#messageEmailEntry#0;class#Driver#0" expanded="false" />
+            <element signature="method#isValidEmailAddress#0;class#Driver#0" expanded="false" />
+            <element signature="method#isValidDate#0;class#Driver#0" expanded="false" />
+            <element signature="method#hold#0;class#Driver#0" expanded="false" />
+            <marker date="1461691157000" expanded="true" signature="4915:6955" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="660">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tables.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="405" max-vertical-offset="1200">
+          <caret line="27" column="31" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/Airline.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="3060">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/GraphHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="9330">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/MyAdjacencyList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="1050">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/VertexNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1020">
+          <caret line="9" column="31" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/EdgeNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="510">
+          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/Driver.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1174" max-vertical-offset="3045">
           <caret line="158" column="46" selection-start-line="158" selection-start-column="46" selection-end-line="158" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#loginScreen#0;class#Driver#0" expanded="false" />
-            <element signature="method#logInPrompt#0;class#Driver#0" expanded="false" />
-            <element signature="method#registerPrompt#0;class#Driver#0" expanded="false" />
             <element signature="method#friendAddEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#getFriendMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getDetailedMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getMessageMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#chooseConversation#0;class#Driver#0" expanded="false" />
             <element signature="method#messageEmailEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#collectUsers#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidEmailAddress#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidDate#0;class#Driver#0" expanded="false" />
             <element signature="method#hold#0;class#Driver#0" expanded="false" />
-            <marker date="1461205686000" expanded="false" signature="2734:4372" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="4449:5564" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="5641:7239" placeholder="..." />
+            <marker date="1461691157000" expanded="true" signature="4915:6955" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -670,26 +806,24 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#createUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#dropUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#isFriend#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#establishFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#pendingFriendExists#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createPendingFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#acceptRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#displayRequests#0;class#DBHelper#0" expanded="false" />
             <element signature="method#threeDegrees#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#getGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#getGroupByID#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createGroup#0;class#DBHelper#0" expanded="false" />
             <element signature="method#addToGroup#0;class#DBHelper#0" expanded="false" />
-            <element signature="e#24475#24483#0" expanded="true" />
-            <element signature="method#getGroupMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#sendMessage#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#displayAllMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#searchUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#debug#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#printGroupContents#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#searchGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="e#27710#27717#0" expanded="true" />
+            <element signature="method#displayMyGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayTopGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayConversation#0;class#DBHelper#0" expanded="false" />
+            <marker date="1461689860000" expanded="true" signature="33236:34221" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -716,22 +850,12 @@
           <caret line="98" column="31" selection-start-line="98" selection-start-column="31" selection-end-line="98" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#loginScreen#0;class#Driver#0" expanded="false" />
-            <element signature="method#logInPrompt#0;class#Driver#0" expanded="false" />
-            <element signature="method#registerPrompt#0;class#Driver#0" expanded="false" />
             <element signature="method#friendAddEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#getFriendMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getDetailedMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getMessageMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#chooseConversation#0;class#Driver#0" expanded="false" />
             <element signature="method#messageEmailEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#collectUsers#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidEmailAddress#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidDate#0;class#Driver#0" expanded="false" />
             <element signature="method#hold#0;class#Driver#0" expanded="false" />
-            <marker date="1461205686000" expanded="false" signature="2734:4372" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="4449:5564" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="5641:7239" placeholder="..." />
+            <marker date="1461691157000" expanded="true" signature="4915:6955" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -749,26 +873,24 @@
           <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#createUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#dropUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#isFriend#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#establishFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#pendingFriendExists#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createPendingFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#acceptRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#displayRequests#0;class#DBHelper#0" expanded="false" />
             <element signature="method#threeDegrees#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#getGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#getGroupByID#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createGroup#0;class#DBHelper#0" expanded="false" />
             <element signature="method#addToGroup#0;class#DBHelper#0" expanded="false" />
-            <element signature="e#24475#24483#0" expanded="true" />
-            <element signature="method#getGroupMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#sendMessage#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#displayAllMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#searchUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#debug#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#printGroupContents#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#searchGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="e#27710#27717#0" expanded="true" />
+            <element signature="method#displayMyGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayTopGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayConversation#0;class#DBHelper#0" expanded="false" />
+            <marker date="1461689860000" expanded="true" signature="33236:34221" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -793,9 +915,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="6240" max-vertical-offset="6630">
           <caret line="417" column="33" selection-start-line="417" selection-start-column="33" selection-end-line="417" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -805,22 +924,12 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#loginScreen#0;class#Driver#0" expanded="false" />
-            <element signature="method#logInPrompt#0;class#Driver#0" expanded="false" />
-            <element signature="method#registerPrompt#0;class#Driver#0" expanded="false" />
             <element signature="method#friendAddEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#getFriendMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getDetailedMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getMessageMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#chooseConversation#0;class#Driver#0" expanded="false" />
             <element signature="method#messageEmailEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#collectUsers#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidEmailAddress#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidDate#0;class#Driver#0" expanded="false" />
             <element signature="method#hold#0;class#Driver#0" expanded="false" />
-            <marker date="1461205686000" expanded="false" signature="2734:4372" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="4449:5564" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="5641:7239" placeholder="..." />
+            <marker date="1461691157000" expanded="true" signature="4915:6955" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -839,26 +948,24 @@
           <caret line="69" column="73" selection-start-line="69" selection-start-column="73" selection-end-line="69" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#createUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#dropUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#isFriend#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#establishFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#pendingFriendExists#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createPendingFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#acceptRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#displayRequests#0;class#DBHelper#0" expanded="false" />
             <element signature="method#threeDegrees#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#getGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#getGroupByID#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createGroup#0;class#DBHelper#0" expanded="false" />
             <element signature="method#addToGroup#0;class#DBHelper#0" expanded="false" />
-            <element signature="e#24475#24483#0" expanded="true" />
-            <element signature="method#getGroupMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#sendMessage#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#displayAllMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#searchUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#debug#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#printGroupContents#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#searchGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="e#27710#27717#0" expanded="true" />
+            <element signature="method#displayMyGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayTopGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayConversation#0;class#DBHelper#0" expanded="false" />
+            <marker date="1461689860000" expanded="true" signature="33236:34221" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -875,9 +982,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
           <caret line="426" column="9" selection-start-line="423" selection-start-column="8" selection-end-line="426" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -887,22 +991,12 @@
           <caret line="43" column="30" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#loginScreen#0;class#Driver#0" expanded="false" />
-            <element signature="method#logInPrompt#0;class#Driver#0" expanded="false" />
-            <element signature="method#registerPrompt#0;class#Driver#0" expanded="false" />
             <element signature="method#friendAddEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#getFriendMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getDetailedMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getMessageMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#chooseConversation#0;class#Driver#0" expanded="false" />
             <element signature="method#messageEmailEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#collectUsers#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidEmailAddress#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidDate#0;class#Driver#0" expanded="false" />
             <element signature="method#hold#0;class#Driver#0" expanded="false" />
-            <marker date="1461205686000" expanded="false" signature="2734:4372" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="4449:5564" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="5641:7239" placeholder="..." />
+            <marker date="1461691157000" expanded="true" signature="4915:6955" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -921,26 +1015,24 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#createUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#dropUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#isFriend#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#establishFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#pendingFriendExists#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createPendingFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#acceptRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#displayRequests#0;class#DBHelper#0" expanded="false" />
             <element signature="method#threeDegrees#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#getGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#getGroupByID#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createGroup#0;class#DBHelper#0" expanded="false" />
             <element signature="method#addToGroup#0;class#DBHelper#0" expanded="false" />
-            <element signature="e#24475#24483#0" expanded="true" />
-            <element signature="method#getGroupMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#sendMessage#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#displayAllMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#searchUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#debug#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#printGroupContents#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#searchGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="e#27710#27717#0" expanded="true" />
+            <element signature="method#displayMyGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayTopGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayConversation#0;class#DBHelper#0" expanded="false" />
+            <marker date="1461689860000" expanded="true" signature="33236:34221" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -957,9 +1049,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -969,22 +1058,12 @@
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#loginScreen#0;class#Driver#0" expanded="false" />
-            <element signature="method#logInPrompt#0;class#Driver#0" expanded="false" />
-            <element signature="method#registerPrompt#0;class#Driver#0" expanded="false" />
             <element signature="method#friendAddEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#getFriendMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getDetailedMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getMessageMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#chooseConversation#0;class#Driver#0" expanded="false" />
             <element signature="method#messageEmailEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#collectUsers#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidEmailAddress#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidDate#0;class#Driver#0" expanded="false" />
             <element signature="method#hold#0;class#Driver#0" expanded="false" />
-            <marker date="1461205686000" expanded="false" signature="2734:4372" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="4449:5564" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="5641:7239" placeholder="..." />
+            <marker date="1461691157000" expanded="true" signature="4915:6955" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1003,26 +1082,24 @@
           <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#createUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#dropUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#isFriend#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#establishFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#pendingFriendExists#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createPendingFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#acceptRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#displayRequests#0;class#DBHelper#0" expanded="false" />
             <element signature="method#threeDegrees#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#getGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#getGroupByID#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createGroup#0;class#DBHelper#0" expanded="false" />
             <element signature="method#addToGroup#0;class#DBHelper#0" expanded="false" />
-            <element signature="e#24475#24483#0" expanded="true" />
-            <element signature="method#getGroupMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#sendMessage#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#displayAllMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#searchUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#debug#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#printGroupContents#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#searchGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="e#27710#27717#0" expanded="true" />
+            <element signature="method#displayMyGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayTopGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayConversation#0;class#DBHelper#0" expanded="false" />
+            <marker date="1461689860000" expanded="true" signature="33236:34221" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1053,9 +1130,41 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.637931" vertical-offset="5035" max-vertical-offset="6570">
           <caret line="399" column="64" selection-start-line="399" selection-start-column="64" selection-end-line="399" selection-end-column="64" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/EdgeNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/MyAdjacencyList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1050">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/VertexNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1020">
+          <caret line="9" column="31" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/Airline.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3060">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/GraphHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9330">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1069,90 +1178,83 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/Group.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="1050">
-          <caret line="49" column="18" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="430" max-vertical-offset="1155">
+          <caret line="53" column="18" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="18" />
           <folding>
-            <element signature="e#425#426#0" expanded="true" />
-            <element signature="e#455#456#0" expanded="true" />
-            <element signature="e#499#500#0" expanded="true" />
-            <element signature="e#537#538#0" expanded="true" />
-            <element signature="e#575#576#0" expanded="true" />
-            <element signature="e#609#610#0" expanded="true" />
-            <element signature="e#663#664#0" expanded="true" />
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#740#741#0" expanded="true" />
-            <element signature="e#767#768#0" expanded="true" />
-            <element signature="e#807#808#0" expanded="true" />
-            <element signature="e#839#840#0" expanded="true" />
-            <element signature="e#879#880#0" expanded="true" />
-            <element signature="e#908#909#0" expanded="true" />
-            <element signature="e#959#960#0" expanded="true" />
-            <element signature="e#995#996#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/ojdbc7.jar!/oracle/jdbc/driver/OracleStatement.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35654595" vertical-offset="23542" max-vertical-offset="52890">
+          <caret line="1669" column="0" selection-start-line="1669" selection-start-column="0" selection-end-line="1669" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tables.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1455">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/Message.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="514" max-vertical-offset="855">
+          <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1304#1305#0" expanded="true" />
+            <element signature="e#1338#1339#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/DBHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2032" max-vertical-offset="3030">
-          <caret line="576" column="20" selection-start-line="576" selection-start-column="20" selection-end-line="576" selection-end-column="20" />
+        <state vertical-scroll-proportion="-9.851851" vertical-offset="3649" max-vertical-offset="5460">
+          <caret line="955" column="57" selection-start-line="955" selection-start-column="57" selection-end-line="955" selection-end-column="57" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#createUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#dropUser#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#isFriend#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#establishFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#pendingFriendExists#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createPendingFriend#0;class#DBHelper#0" expanded="false" />
             <element signature="method#acceptRequest#0;class#DBHelper#0" expanded="false" />
             <element signature="method#displayRequests#0;class#DBHelper#0" expanded="false" />
             <element signature="method#threeDegrees#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#getGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#getGroupByID#0;class#DBHelper#0" expanded="false" />
             <element signature="method#createGroup#0;class#DBHelper#0" expanded="false" />
             <element signature="method#addToGroup#0;class#DBHelper#0" expanded="false" />
-            <element signature="e#24475#24483#0" expanded="true" />
-            <element signature="method#getGroupMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#sendMessage#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#displayAllMessages#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#searchUser#0;class#DBHelper#0" expanded="false" />
-            <element signature="method#debug#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#printGroupContents#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#searchGroup#0;class#DBHelper#0" expanded="false" />
+            <element signature="e#27710#27717#0" expanded="true" />
+            <element signature="method#displayMyGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayTopGroups#0;class#DBHelper#0" expanded="false" />
+            <element signature="method#displayConversation#0;class#DBHelper#0" expanded="false" />
+            <marker date="1461689860000" expanded="true" signature="33236:34221" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/Driver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-43.88889" vertical-offset="75" max-vertical-offset="3855">
-          <caret line="113" column="42" selection-start-line="113" selection-start-column="42" selection-end-line="113" selection-end-column="42" />
+        <state vertical-scroll-proportion="3.9069767" vertical-offset="765" max-vertical-offset="9300">
+          <caret line="163" column="70" selection-start-line="163" selection-start-column="70" selection-end-line="163" selection-end-column="70" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#loginScreen#0;class#Driver#0" expanded="false" />
-            <element signature="method#logInPrompt#0;class#Driver#0" expanded="false" />
-            <element signature="method#registerPrompt#0;class#Driver#0" expanded="false" />
             <element signature="method#friendAddEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#getFriendMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getDetailedMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#getMessageMenuChoice#0;class#Driver#0" expanded="false" />
-            <element signature="method#chooseConversation#0;class#Driver#0" expanded="false" />
             <element signature="method#messageEmailEntry#0;class#Driver#0" expanded="false" />
-            <element signature="method#collectUsers#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidEmailAddress#0;class#Driver#0" expanded="false" />
             <element signature="method#isValidDate#0;class#Driver#0" expanded="false" />
             <element signature="method#hold#0;class#Driver#0" expanded="false" />
-            <marker date="1461205686000" expanded="false" signature="2734:4372" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="4449:5564" placeholder="..." />
-            <marker date="1461205686000" expanded="true" signature="5641:7239" placeholder="..." />
+            <marker date="1461691157000" expanded="true" signature="4915:6955" placeholder="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tables.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21305183" vertical-offset="294" max-vertical-offset="1155">
-          <caret line="27" column="31" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>

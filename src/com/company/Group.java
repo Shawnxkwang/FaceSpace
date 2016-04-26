@@ -6,6 +6,11 @@ package com.company;
 // package com.company;   //comment out for thoth
 
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Created by Tong on 4/17/16.
  */
@@ -14,12 +19,16 @@ public class Group{
     private long groupID;
     private String name;
     private String description;
-    private long mLimit;
+    private String creator;
+    private int mLimit;
+    private int memberCount;
 
     // constructor
+    public Group(long groupID){
+        this.groupID = groupID;
+    }
     public Group(){
-        this.mLimit = 100;
-        this.description= "description";
+
     }
 
     public long getGroupID() {
@@ -46,14 +55,36 @@ public class Group{
         this.name = name;
     }
 
-    public long getMembershipLimit() {
+    public int getMembershipLimit() {
         return mLimit;
     }
 
-    public void setMembershipLimit(long mLimit) {
+    public void initMembers(Connection connection){
+        try {
+            String getMem = "SELECT COUNT(member) FROM Membership WHERE groupID='"+groupID+"'";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(getMem);
+            if (resultSet.next()) memberCount = resultSet.getInt(1);
+            else System.out.println("FAILED");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public int getMembers(){
+        return memberCount;
+    }
+
+    public void setMembershipLimit(int mLimit) {
         this.mLimit = mLimit;
     }
 
+    public void setCreator(String email){
+        creator = email;
+    }
+    public String getCreator(){
+        return creator;
+    }
     @Override
     public String toString() {
         return ("groupID = " + groupID +"\n"+

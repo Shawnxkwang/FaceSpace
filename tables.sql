@@ -21,6 +21,9 @@ create table Friendship (
 );
 
 
+-- Add creator column for adding creator to group purposes?
+-- Add current Number of members?
+
 drop table GroupTable cascade constraints;
 create table GroupTable (
 	groupID number(10) not null,
@@ -33,7 +36,7 @@ create table GroupTable (
 Create sequence group_seq start with 1
 increment by 1
 minvalue 1
-maxvalue 10000;
+maxvalue 1000000;
 
 CREATE OR REPLACE TRIGGER make_group_id
 BEFORE INSERT ON GroupTable
@@ -68,6 +71,20 @@ create table Message (
 	constraints fk_recipient foreign key(recipientEmail) references UserTable(email)
 );
 
+Create sequence message_seq start with 1
+increment by 1
+minvalue 1
+maxvalue 10000000;
+
+CREATE OR REPLACE TRIGGER make_group_id
+BEFORE INSERT ON GroupTable
+FOR EACH ROW
+BEGIN
+  SELECT message_seq.NEXTVAL
+  INTO   :new.msgID
+  FROM   dual;
+END;
+/
 
 
 

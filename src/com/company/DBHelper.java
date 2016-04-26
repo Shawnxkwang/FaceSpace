@@ -57,7 +57,7 @@ public class DBHelper {
     public boolean createUser(User user){
         // Creates user returns false if does not exist
         if(getUser(user.getEmail()) != null){
-            System.out.println("\n-- USER EXISTS ---");
+            System.out.println("\n-- User Exists");
             System.out.println("----------------------------------------------------------------------------");
             System.out.print(user.toString());
             System.out.println();
@@ -70,7 +70,8 @@ public class DBHelper {
             prepStatement.setString(2, user.getFirstName());
             prepStatement.setString(3, user.getLastName());
             prepStatement.setDate(4, user.getBirthDate());
-            prepStatement.executeUpdate();
+            int worked = prepStatement.executeUpdate();
+            if(worked == 0) return false;
             prepStatement.close();
         }catch (SQLException e){
             System.out.println("Something Went wrong adding that user");
@@ -79,8 +80,28 @@ public class DBHelper {
     }
 
     public boolean dropUser(User user){
-        // delete user here
-        return false;
+        // Delete does not Cascade FK_M_USER violated - child record found
+        if(getUser(user.getEmail()) == null){
+            System.out.println("\n-- User Does Not Exist");
+            System.out.println("----------------------------------------------------------------------------");
+            System.out.print(user.toString());
+            System.out.println();
+            return false;
+        }
+        try {
+            String delete = "DELETE FROM UserTable WHERE email='"+user.getEmail()+"'";
+            prepStatement = connection.prepareStatement(delete);
+            int worked = prepStatement.executeUpdate();
+            if(worked == 0){
+                System.out.println("\nFailed to delete \n"+user.toString());
+                return false;
+            }
+            prepStatement.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("\nFailed to delete \n"+user.toString());
+        }
+        return true;
     }
 
     /////////////////////////////////////////////////////////////////
@@ -145,6 +166,10 @@ public class DBHelper {
     }
 
     public boolean createRequest(String email1, String email2){
+        if(email1.equals(email2)){
+            System.out.println("You cannot request yourself");
+            return false;
+        }
         try {
             // Check if anyone even has that email
             if(getUser(email2) == null){
@@ -276,7 +301,7 @@ public class DBHelper {
                     valid = true;
                     System.out.println("\n----------------------------------------------------------------------------");
                     System.out.print("Enter Email of the friend you would like to confirm: ");
-                    String entry = sc.nextLine();
+                    String entry = sc.nextLine().toLowerCase();
                     if(Driver.isValidEmailAddress(entry) && validEmails.contains(entry) ){
                         if (establishFriend(email,entry)) System.out.println("\nYou are now friends with "+ entry+" :)\n");
                         else System.out.println("There was an issue confirming the request from "+entry);
@@ -449,30 +474,27 @@ public class DBHelper {
     // Group Functions
     /////////////////////////////////////////////////////////////////
 
-    public Group getGroup(long groupID){
+    public Group getGroupByID(long groupID){
         //Check  if group exists
+        Group group = new Group(groupID);
         try {
+
         	// NOTE:
         	// need to use a new Statement and ResultSet, otherwise would overwrite the caller's (displayGroup())
             Statement statement = connection.createStatement();
             String checkGroup = "SELECT * FROM GroupTable WHERE groupID ="+ groupID;
             ResultSet resultSet = statement.executeQuery(checkGroup);
             if (resultSet.next()){
-                Group group = new Group();
-                group.setGroupID(groupID);
                 group.setName(resultSet.getString(2));
                 group.setDescription(resultSet.getString(3));
-                group.setMembershipLimit(resultSet.getLong(4));
-                statement.close();
-                resultSet.close();
-                return group;                    // has group
+                group.setMembershipLimit(resultSet.getInt(4));     // has group
+                group.initMembers(connection);
             }
-            else{
-                statement.close();
-                resultSet.close();
-                System.out.println(" group not exists");
-                return null;                  // no group
-            }
+            else System.out.println(" A Group With that ID does not exist");            // no group
+
+            statement.close();
+            resultSet.close();
+            return group;
         }catch (SQLException e){
             e.printStackTrace();
             System.out.println("Failure to check if group exists");
@@ -482,172 +504,383 @@ public class DBHelper {
     }
 
     public boolean createGroup(Group group){
-
-        if( getGroup(group.getGroupID()) != null){
-            System.out.println("\n-- Group EXISTS ---");
-            System.out.println("----------------------------------------------------------------------------");
-            System.out.print(group.toString());
-            System.out.println();
-            return false;
-        }
         try {
-            String inputQuery = "INSERT INTO GroupTable VALUES (?,?,?,?)";
+            //String inputQuery = "INSERT INTO GroupTable VALUES (?,?,?,?)";
+            // ALlows for same name groups
+            String inputQuery = "INSERT INTO GroupTable (name,description,mLimit) VALUES (?,?,?)";
             prepStatement = connection.prepareStatement(inputQuery);
-            prepStatement.setLong(1, group.getGroupID());
-            prepStatement.setString(2, group.getName());
-            prepStatement.setString(3, group.getDescription());
-            prepStatement.setLong(4, group.getMembershipLimit());
+            //prepStatement.setLong(1, group.getGroupID());
+            prepStatement.setString(1, group.getName());
+            prepStatement.setString(2, group.getDescription());
+            prepStatement.setInt(3, group.getMembershipLimit());
             prepStatement.executeUpdate();
             prepStatement.close();
         }catch (SQLException e){
-            System.out.println("Something Went wrong adding that group");
+            e.printStackTrace();
+            System.out.println("\nSomething Went wrong adding that group\n");
         }
         
-        System.out.println("\n-- Creating Group Succeeds! ---");
-    //    System.out.println(group);
+        System.out.println("\n-- Group Created!\n");
+        System.out.println("----------------------------------------------------------------------------");
+        System.out.println("\tGroup Name        : "+group.getName());
+        System.out.println("\tGroup Description : "+group.getDescription());
+        System.out.println("\tGroup Size        : (0/"+group.getMembershipLimit()+")");
+        System.out.println();
         return true;
     }
 
-    public boolean addToGroup(String email, long groupID) {
+    public boolean addToGroup(String email, Group group) {
     	// check if user exists
         if (getUser(email) == null) {
-            System.out.println("\n-- USER NOT EXISTS ---\n Failed to add it to the group.");
-            System.out.println("----------------------------------------------------------------------------");
+            System.out.println("\nIt seems that user no longer exists\n");
             return false;
         }
         // check if group exists
-        if (getGroup(groupID) == null) {
-            System.out.println("\n-- GROUP NOT EXISTS ---\n Failed to add it to the group.");
-            System.out.println("----------------------------------------------------------------------------");
+        if (getGroupByID(group.getGroupID()) == null) {
+            System.out.println("\nIt seems that group no longer exists\n");
             return false;
         }
 
         // check if added
         try {
+
             statement = connection.createStatement();
             String checkExist = "SELECT * FROM Membership " +
-                    "WHERE groupID=" + groupID + " AND member='" + email + "'";
+                    "WHERE groupID=" + group.getGroupID() + " AND member='" + email + "'";
             resultSet = statement.executeQuery(checkExist);
+
             if (resultSet.next()) {
-                System.out.println("The user is already in the group.");
+                System.out.println("\nYou are already in "+group.getName()+"\n");
                 return false;
             } else {
                 String inputQuery = "INSERT INTO Membership VALUES (?,?)";
                 prepStatement = connection.prepareStatement(inputQuery);
-                prepStatement.setLong(1, groupID);
+                prepStatement.setLong(1, group.getGroupID());
                 prepStatement.setString(2, email);
-                prepStatement.executeUpdate();
+                int worked = prepStatement.executeUpdate();
                 prepStatement.close();
-                
-                System.out.println("You are in group " + groupID +"! ");
+                if(worked != 0) System.out.println("\nCongratulations you have joined " + group.getName() +" :)\n\n");
+                else System.out.println("\nSorry " + group.getName() +" is already full :(\n\n");
                 return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Something Went wrong adding that user to the group");
+            System.out.println("Something Went wrong trying to join "+group.getName());
             return false;
         }finally{
         	try {
 				statement.close();
 				resultSet.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         	
         }
     }
-    
-    public boolean addToGroup(User user, Group group) {
-    	return addToGroup(user.getEmail(),  group.getGroupID());
-    }
 
-    public void displayGroups(String email){
+    public void printGroupContents(long groupID){
         try {
-            statement = connection.createStatement();
-            String groupQuery = "SELECT DISTINCT groupID FROM Membership WHERE member= '"+email +"'";
-            resultSet = statement.executeQuery(groupQuery);
-            
-            int count = 0;
-            while (resultSet.next()){
-            	count++;
-            	System.out.println("\n--------- My Group " +count+ " ---------\n");
-            	 Group group = getGroup(resultSet.getLong(1));
-                 System.out.println(group.toString());
+            Group group = getGroupByID(groupID);
+            if(group != null){
+                String query = "SELECT * FROM UserTable WHERE email IN (SELECT member FROM Membership WHERE groupID='"+groupID+"') ORDER BY lastName";
+                statement = connection.createStatement();
+                resultSet = statement.executeQuery(query);
+                System.out.println("\n\n----------------------------------------------------------------------------");
+                System.out.println("-- Group Name       : "+group.getName()+" ("+group.getMembers()+"/"+group.getMembershipLimit()+")");
+                System.out.println("-- Group Description: "+group.getDescription());
+                System.out.printf("\n   %-20s%-20s%-20s\n", "First", "Last","D.O.B");
+                System.out.println("----------------------------------------------------------------------------");
+                if(resultSet.next()){
+                    do{
+                        System.out.printf("   %-20s%-20s%-20s\n",resultSet.getString(2), resultSet.getString(3),
+                                resultSet.getString(4).substring(0,10));
+                    }while (resultSet.next());
+                }else System.out.println("\nThere is no users this group right now\n");
+
             }
-            
-            if( count==0){
-            	System.out.println("\nYou are not a member of any groups\n");
-            }
-            
+            System.out.println("\n\n");
         }catch (SQLException e){
             e.printStackTrace();
-        }finally{
-        	try {
-				statement.close();
-				resultSet.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	
         }
+
+
     }
 
-    public void displayTopGroups(){
-    	// currently display all groups
-    	 try {
-             statement = connection.createStatement();
-             String groupQuery = "SELECT * FROM GroupTable";
-             resultSet = statement.executeQuery(groupQuery);
-             
-             while (resultSet.next()){
-            	 Long id = resultSet.getLong(1);
-                 String name = resultSet.getString(2);
-                 System.out.println("ID: " + id+ ", group Name: "+ name );
-             }
-             
-//             if (resultSet.next()){
-//                 do{
-//                     Long id = resultSet.getLong(1);
-//                     String name = resultSet.getString(2);
-//                     System.out.println("ID: " + id+ ", group Name: "+ name );
-//                 }while (resultSet.next());
-//             }
+    public Group searchGroup(String groupName, Scanner sc){
+        ArrayList<Group> closeMatches = null;
+        try{
+            groupName = groupName.toLowerCase().trim();
+            StringBuilder sb = new StringBuilder();
+            char[] suffix = groupName.toCharArray();
+            for (int i = 0; i < suffix.length-1; i++) {
+                sb.append(" OR name LIKE '%");
+                for (int j = 0; j < (i+1); j++) sb.append(suffix[j]);
+                sb.append("%'");
+            }
 
-         }catch (SQLException e){
-             e.printStackTrace();
-         }
-    }
+            String nearMatch = "SELECT groupID, name, description, mLimit " +
+                    "FROM GroupTable " +
+                    "WHERE (lower(name) " +
+                    "LIKE  '%"+groupName+"%')"+sb.toString();
 
-    public ArrayList<String> fetchGroupMatches(){
-        try {
-            ArrayList<String> matches = new ArrayList<String>();
+            System.out.println(nearMatch);
+
             statement = connection.createStatement();
-            String pendingFriends = "";
-            resultSet = statement.executeQuery(pendingFriends);
-        }catch (SQLException e){
+            resultSet = statement.executeQuery(nearMatch);
 
+
+            closeMatches = new ArrayList<Group>();
+            ArrayList<Group> perfectMatches = new ArrayList<Group>();
+
+            while (resultSet.next()){
+                Group g = new Group(resultSet.getLong(1));
+                g.setName(resultSet.getString(2));
+                g.setDescription(resultSet.getString(3));
+                g.setMembershipLimit(resultSet.getInt(4));
+                g.initMembers(connection);
+                closeMatches.add(g);
+                if(g.getName().equalsIgnoreCase(groupName))perfectMatches.add(g);
+            }
+
+            if(perfectMatches.size() == 1){
+                return perfectMatches.get(0);
+            }
+            else if (perfectMatches.size() > 1){
+                System.out.println("\n\n-- Multiple Matches\n");
+                System.out.printf("%-5s%-35s%-20s%-15s\n", "ID", "Name", "Description","Members");
+                System.out.println("----------------------------------------------------------------------------");
+                for (int i = 0; i < perfectMatches.size(); i++) {
+                    System.out.printf("%-5d%-35s%-20s%-15s\n",(i+1),
+                            perfectMatches.get(i).getName(),
+                            perfectMatches.get(i).getDescription(),
+                            "("+perfectMatches.get(i).getMembers() +"/"+perfectMatches.get(i).getMembershipLimit()+")");
+                }
+                System.out.println();
+                String choice;
+                boolean valid;
+                do {
+                    valid = true;
+                    System.out.print("More than one group with that name. Did you mean one From Above? (Y/N): ");
+                    choice = sc.nextLine();
+                    if(choice.equalsIgnoreCase("Y")){
+                        int id;
+                        boolean hold;
+                        do {
+                            hold = true;
+                            System.out.print("Please Enter the ID Of The Group Above : ");
+                            try {
+                                id = Integer.parseInt(sc.nextLine());
+                                if(id <= 0 || id > perfectMatches.size()){
+                                    System.out.println("\n--> Please Only Enter a Valid ID From The List Above\n"); hold = false;
+                                }
+                                else return perfectMatches.get(id-1);
+                            }catch (NumberFormatException e){
+                                System.out.println("\n--> Please Only Enter a Valid ID From The List Above\n");
+                                hold = false;
+                            }
+                        }while (!hold);
+                    }
+                    else if (!choice.equalsIgnoreCase("N")){
+                        System.out.println("\nPlease Only (Y/N)\n");
+                        valid = false;
+                    }
+                }while (!valid);
+            }
+            else if(closeMatches.size() == 0){
+                System.out.println("\nThere Is No Group Name like that and No Partial Matches For that Group\n");
+                return null;
+            }
+            else if(closeMatches.size() == 1){
+                System.out.println("\n\n-- Closest Suggestion\n");
+                System.out.printf("%-5s%-35s%-20s%-15s\n", "ID", "Name", "Description","Members");
+                System.out.println("----------------------------------------------------------------------------");
+                System.out.printf("%-5d%-35s%-20s%-15s\n",1,
+                        closeMatches.get(0).getName(),
+                        closeMatches.get(0).getDescription(),
+                            "("+closeMatches.get(0).getMembers() +"/"+closeMatches.get(0).getMembershipLimit()+")");
+                System.out.println("\n----------------------------------------------------------------------------");
+                boolean valid;
+                String choice;
+                do {
+                    valid = true;
+                    System.out.print("There was only one close match. Were you looking for this Group (Y/N) : ");
+                    choice = sc.nextLine();
+                    if (choice.equalsIgnoreCase("Y")){
+                        return closeMatches.get(0);
+                    }
+                    else if (!choice.equalsIgnoreCase("N")){
+                        System.out.println("Please Only (Y/N)");
+                        valid = false;
+                    }
+                }while (!valid);
+                System.out.println("\n\n");
+                return null;
+            }
+            else {
+                System.out.println("\n\n-- Suggestions\n");
+                System.out.printf("%-5s%-35s%-20s%-15s\n", "ID", "Name", "Description","Members");
+                System.out.println("----------------------------------------------------------------------------");
+                for (int i = 0; i < closeMatches.size(); i++) {
+                    System.out.printf("%-5d%-35s%-20s%-15s\n",(i+1),
+                            closeMatches.get(i).getName(),
+                            closeMatches.get(i).getDescription(),
+                            "("+closeMatches.get(i).getMembers() +"/"+closeMatches.get(i).getMembershipLimit()+")");
+                }
+                System.out.println();
+                String choice;
+                boolean valid;
+                do {
+                    valid = true;
+                    System.out.print("There is no group with that name. Did you mean one From Above? (Y/N): ");
+                    choice = sc.nextLine();
+                    if(choice.equalsIgnoreCase("Y")){
+                        int id;
+                        boolean hold;
+                        do {
+                            hold = true;
+                            System.out.print("Please Enter the ID Of The Group Above : ");
+                            try {
+                                id = Integer.parseInt(sc.nextLine());
+                                if(id <= 0 || id > closeMatches.size()){
+                                    System.out.println("\n--> Please Only Enter a Valid ID From The List Above\n"); hold = false;
+                                }
+                                else return closeMatches.get(id-1);
+                            }catch (NumberFormatException e){
+                                System.out.println("\n--> Please Only Enter a Valid ID From The List Above\n");
+                                hold = false;
+                            }
+                        }while (!hold);
+                    }
+                    else if (!choice.equalsIgnoreCase("N")){
+                        System.out.println("\nPlease Only (Y/N)\n");
+                        valid = false;
+                    }
+                }while (!valid);
+            }
+            System.out.println("\n\n");
+        }catch (SQLException e){
+            e.printStackTrace();
         }
         return null;
     }
 
-    public boolean openGroup(){
 
-        return false;
+    public ArrayList<Long> displayMyGroups(String email) {
+        ArrayList<Long> myGroups = null;
+        try {
+            String groupQuery = "SELECT DISTINCT groupID FROM Membership WHERE member= '" + email + "'";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(groupQuery);
+            System.out.println("\n\n-- Your Groups\n\n");
+            System.out.printf("   %-20s%-35s%-20s\n", "#", "Group Name", "Members");
+            System.out.println("----------------------------------------------------------------------------");
+            int rank = 1;
+
+            if (resultSet.next()) {
+                myGroups = new ArrayList<Long>();
+                do {
+                    Group group = getGroupByID(resultSet.getLong(1));
+                    System.out.printf("   %-20d%-35s%-20s\n\n   Description : %-20s\n\n",
+                            rank,
+                            group.getName(),
+                            group.getMembers()+" / "+
+                            group.getMembershipLimit(),
+                            group.getDescription());
+                    System.out.println("----------------------------------------------------------------------------");
+                    rank++;
+                } while (resultSet.next());
+                System.out.println("\n\n");
+            }
+            else System.out.println("\nYou are not a member of any groups\n");
+            statement.close();
+            resultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return myGroups;
     }
 
-    public void getGroupMessages(String groupID){
+    public ArrayList<Long> displayTopGroups(){
+    	// currently display all groups
+    	 try {
+             statement = connection.createStatement();
+             //String groupQuery = "SELECT * FROM GroupTable";
 
+             String groupQuery = "SELECT GroupTable.groupID, GroupTable.name, T.C ,GroupTable.mLimit, GroupTable.description " +
+                     "FROM GroupTable, "+
+                     "(SELECT * FROM (SELECT groupID, COUNT(*) as C FROM Membership GROUP BY groupID ORDER BY COUNT(*) DESC) WHERE rownum <= 3) T "+
+                     "WHERE T.groupID=GroupTable.groupID";
+
+
+             resultSet = statement.executeQuery(groupQuery);
+
+             System.out.println("\n\n-- Top Groups (By Population)\n\n");
+             System.out.printf("   %-20s%-35s%-20s\n", "Rank", "Group Name", "Members");
+             System.out.println("----------------------------------------------------------------------------");
+             int rank = 1;
+
+             if (resultSet.next()){
+                 ArrayList<Long> topGroups = new ArrayList<Long>();
+                do{
+                    long gid = resultSet.getLong(1);
+                    topGroups.add(gid);
+
+                    System.out.printf("   %-20d%-35s%-20s\n\n   Description : %-20s\n\n",
+                            rank,
+                            resultSet.getString(2),
+                            resultSet.getInt(3)+" / "+
+                            resultSet.getInt(4),
+                            resultSet.getString(5));
+                    System.out.println("----------------------------------------------------------------------------");
+                    rank++;
+                }while (resultSet.next());
+                 System.out.println("\n\n");
+                 return topGroups;
+             }
+             else {
+                 System.out.println("\nSorry All The Groups Are Currently Empty So There's No Top Groups\n");
+             }
+
+         }catch (SQLException e){
+             e.printStackTrace();
+         }
+        return null;
     }
+
 
     /////////////////////////////////////////////////////////////////
     // Message Functions
     /////////////////////////////////////////////////////////////////
 
-    public void displayRecentMessages(String email){
+    public void displayUserRecentMessages(User user){
         // displays Recent 5 Messages given a users email
+        try {
 
+            String message = "SELECT T.R, T.time_sent FROM "+
+                    "(SELECT recipientEmail AS R,time_sent " +
+                    "FROM Message, User " +
+                    "WHERE senderEmail='"+user.getEmail()+"' " +
+                    "AND "+
+                    "UNION " +
+                    "SELECT senderEmail AS R,time_sent " +
+                    "FROM Message,User " +
+                    "WHERE recipientEmail='"+user.getEmail()+"') T " +
+                    "WHERE rownum <= 5" +
+                    "ORDER BY T.time_sent DESC";
+
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(message);
+
+            int count = 1;
+            while(resultSet.next()){
+                System.out.println("----------------------------------------------------------------------------");
+                System.out.printf("%2s%14s%34s\n\n",count,resultSet.getString(1),resultSet.getString(2));
+                count++;
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<User> getRecentMessages(String email){
@@ -655,17 +888,76 @@ public class DBHelper {
         return null;
     }
 
-    public String openMessageFromEmail(String email1, String email2){
-        // get all messages
+    public String displayConversation(User one, User two){
+        if (one.getEmail().equalsIgnoreCase(two.getEmail())){
+            System.out.println("\nYou cannot send a message to yourself\n");
+            return null;
+        }
+        try{
+            String conv = "SELECT senderEmail, time_sent, msg_subject, msg_body " +
+                    "FROM Message " +
+                    "WHERE (senderEmail='"+one.getEmail()+"' AND recipientEmail='"+two.getEmail()+"') " +
+                    "OR (senderEmail='"+two.getEmail()+"' AND recipientEmail='"+one.getEmail()+"') ORDER BY time_sent ASC";
+
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(conv);
+
+            if (resultSet.next()){
+                do {
+                    if (resultSet.getString(1).equals(one.getEmail())) {
+                        System.out.println("-- You (" + resultSet.getString(2) + ")");
+                        System.out.println(resultSet.getString(3));
+                        String[] message = resultSet.getString(4).split("\\s+");
+                        for (int i = 0; i < message.length; i++) {
+                            System.out.print(message[i] + " ");
+                            if (i % 8 == 0) System.out.println();
+                        }
+                    } else {
+                        System.out.printf("%35s-- %s (%s)", "", one.getFirstName() + " " + two.getLastName(), resultSet.getString(2));
+                        System.out.printf("%30s\n", resultSet.getString(3));
+                        String[] message = resultSet.getString(4).split("\\s+");
+                        for (int i = 0; i < message.length; i++) {
+                            System.out.print(message[i] + " ");
+                            if (i % 8 == 0) System.out.println();
+                        }
+                    }
+                }while (resultSet.next());
+            }
+            else System.out.println("    You do not have any message history with this person at this time            ");
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
         return null; // null if no messages exist
     }
 
-    public void sendMessage(String email1, String email2){
+    public boolean sendMessage(Message m){
         // send message from email1 to email2
+        try {
+            String inputQuery = "INSERT INTO Message (senderEmail,recipientEmail,time_sent,msg_subject,msg_body) VALUES (?,?,?,?,?)";
+            prepStatement = connection.prepareStatement(inputQuery);
+            prepStatement.setString(1, m.getSenderEmail());
+            prepStatement.setString(2, m.getRecipientEmail());
+            prepStatement.setTimestamp(3, m.getTimeSent());
+            prepStatement.setString(4, m.getMsgSubject());
+            prepStatement.setString(5, m.getMsgBody());
+            int worked = prepStatement.executeUpdate();
+            if(worked == 0) return false;
+            prepStatement.close();
+        }catch (SQLException e){
+            System.out.println("Failed to send that message");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
-    public void displayTopMessagers(ArrayList<User> users){
+    public void displayTopMessagers(int months, int users){
         // display these users by top #  of messages sent to these users
+        //Display the top k users
+        //who have sent or received the highest number of messages during the
+        // past x months.
     }
 
     public void displayAllMessages(String email){
@@ -688,6 +980,30 @@ public class DBHelper {
 
     public void debug(){
         try {
+            /*
+            statement = connection.createStatement();
+            String m = "SELECT * FROM Message";
+            System.out.println(m);
+            resultSet = statement.executeQuery(m);
+            System.out.println("\n --> Message");
+            /*
+            msgID number(10) not null,
+	senderEmail varchar2(128) not null,
+	recipientEmail varchar2(128) not null,
+	time_sent timestamp,
+	msg_subject varchar2(1024),
+	msg_body varchar2(1024),
+             */
+            /*
+            System.out.printf("\n    %-20s%-20s%-20s-20s%-20s%-20s\n","msgID","senderEmail","recipientEmail","time_sent","msg_subject","msg_body");
+            System.out.println("----------------------------------------------------------------------------");
+            if (resultSet.next()){
+                do{
+                    System.out.printf("\n    %-20s%-20s%-20s-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),
+                            resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getString(6));
+                }while (resultSet.next());
+            }
+            */
             statement = connection.createStatement();
             String all = "SELECT firstName, lastName,email "+ "FROM UserTable";
             System.out.println(all);
@@ -715,6 +1031,19 @@ public class DBHelper {
                     }
                     System.out.printf("%-50s%-50s%-50s\n",resultSet.getString(1),resultSet.getString(2),s);
                 }while (resultSet.next());
+
+                statement = connection.createStatement();
+                String all3 = "SELECT * FROM GroupTable";
+                System.out.println(all3);
+                resultSet = statement.executeQuery(all3);
+                System.out.println("\n --> Group Table");
+                System.out.printf("\n    %-20s%-20s%-20s%-20s\n","id","name","des","limit");
+                System.out.println("----------------------------------------------------------------------------");
+                if (resultSet.next()){
+                    do{
+                        System.out.printf("    %-20s%-20s%-20s%-20s\n",resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4));
+                    }while (resultSet.next());
+                }
             }
         }catch (SQLException e){
             e.printStackTrace();
