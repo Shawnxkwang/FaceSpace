@@ -1,4 +1,4 @@
-//package com.company; // comment for thoth server
+// package com.company;
 
 /**
  * Created by Xiaokai on 4/16/2016.
@@ -150,14 +150,16 @@ public class UserAndGroupGen {
             for (int i =0;i< arr.length; i++){
                 String sql = arr[i];
 
-                stmt.executeUpdate(sql);
-
+              //  stmt.executeUpdate(sql);
+                System.out.println(sql);
 
             }
 
             for (int j = 0;j < arr2.length; j++){
                 String sql2 = arr2[j];
-                stmt.executeUpdate(sql2);
+
+                 System.out.println(sql2);
+             //   stmt.executeUpdate(sql2);
             }
 
 

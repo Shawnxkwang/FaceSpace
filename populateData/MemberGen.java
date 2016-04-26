@@ -33,7 +33,7 @@ public class MemberGen {
             String sql;
             sql = "SELECT email from UserTable";
             ResultSet rs = stmt.executeQuery(sql);
-
+         
 
             while(rs.next()){
 
@@ -62,8 +62,10 @@ public class MemberGen {
                         "('"+id1+"', '"+em1+"')";
                 sql3 = "INSERT INTO Membership VALUES " +
                         "('"+id2+"', '"+em1+"')";
-                stmt.executeQuery(sql2);
-                stmt.executeQuery(sql3);
+                // stmt.executeQuery(sql2);
+                // stmt.executeQuery(sql3);
+                System.out.println(sql2);
+                System.out.println(sql3);
 
             }
             rs.close();

@@ -56,7 +56,8 @@ public class FriendGen {
                     sql2 = "INSERT INTO Friendship VALUES('" + em1 + "', '" + em2 + "', " +
                             "TO_TIMESTAMP('" + new Timestamp(date1.getTime()) + "','YYYY-MM-DD HH24:MI:SS:FF')," +
                             "TO_TIMESTAMP('" + new Timestamp(date2.getTime()) + "','YYYY-MM-DD HH24:MI:SS:FF'))";
-                    stmt.executeQuery(sql2);
+                    //stmt.executeQuery(sql2);
+                    System.out.println(sql2);
                     n++;
                     if (n == 500){
                         break;

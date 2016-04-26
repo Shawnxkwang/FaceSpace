@@ -17,6 +17,8 @@ public class MessageGen {
     private static final String USER = "xiw69";
     private static final String PASS = "3799662";
 
+
+
     public static void main(String[] args) {
         Connection conn = null;
         Statement stmt = null;
@@ -51,8 +53,8 @@ public class MessageGen {
                    java.util.Date date1= new java.util.Date();
 
                    String em2 = arr.get(1);
-                   String sbj = em1+"TO"+em2;
-                   String body = em1 + "Hello -->" + em2;
+                   String sbj = em1+" TO "+em2;
+                   String body = em1 + " Hello --> " + em2;
                    if (em1.equals(em2)){
                        em2 = arr.get(2);
 
@@ -61,7 +63,8 @@ public class MessageGen {
                    sql2 = "INSERT INTO Message VALUES('"+i+"', '"+em1+"', '"+em2+"', " +
                            "TO_TIMESTAMP('"+new Timestamp(date1.getTime())+"','YYYY-MM-DD HH24:MI:SS:FF')," +
                            "'"+sbj+"', '"+body+"')";
-                   stmt.executeQuery(sql2);
+                    System.out.println(sql2);
+                 //  stmt.executeQuery(sql2);
                }
 
             }

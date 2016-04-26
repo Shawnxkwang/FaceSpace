@@ -6,6 +6,7 @@ create table UserTable (
 	firstName varchar2(64) not null,
 	lastName varchar2(64) not null,
 	birthday date,
+	lastLoginTime timestamp,
 	constraints pk_users primary key(email)
 );
 
@@ -21,6 +22,7 @@ create table Friendship (
 	constraints fk_person1 foreign key(person1) references UserTable(email),
 	constraints fk_person2 foreign key(person2) references UserTable(email)
 );
+
 
 
 drop table GroupTable cascade constraints;
