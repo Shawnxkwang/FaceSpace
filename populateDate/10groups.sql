@@ -1,0 +1,10 @@
+INSERT INTO GroupTable (groupID,name,description,mLimit) VALUES (1,'Nulla Corporation','NC',15);
+INSERT INTO GroupTable (groupID,name,description,mLimit) VALUES (2,'Mi Fringilla Mi Associates','MFMA',20);
+INSERT INTO GroupTable (groupID,name,description,mLimit) VALUES (3,'Sem Pellentesque Ut Company','SPUC',30);
+INSERT INTO GroupTable (groupID,name,description,mLimit) VALUES (4,'Ut Lacus Foundation','ULF',40);
+INSERT INTO GroupTable (groupID,name,description,mLimit) VALUES (5,'Metus Sit Inc.','MSI',30);
+INSERT INTO GroupTable (groupID,name,description,mLimit) VALUES (6,'Velit Institute','2vvvsss',20);
+INSERT INTO GroupTable (groupID,name,description,mLimit) VALUES (7,'Tellus Eu Augue Industries','TEAI',30);
+INSERT INTO GroupTable (groupID,name,description,mLimit) VALUES (8,'Purus Associates','PRA',20);
+INSERT INTO GroupTable (groupID,name,description,mLimit) VALUES (9,'Ac Turpis Egestas Company','ATE',5);
+INSERT INTO GroupTable (groupID,name,description,mLimit) VALUES (10,'Eleifend Nec Malesuada Company','ENM',30);
