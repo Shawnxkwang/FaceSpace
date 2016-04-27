@@ -29,12 +29,10 @@ public class Driver {
     //  Database credentials
     //  login to the DB.
     private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
+    // test local db
+    //private static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:XE";
     private static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
 
-    //xiw69
-    //3799662
-    private static final String USER = "xiw69";
-    private static final String PASS = "3799662";
 
     private User currentUser; // used for all queries about the user
 
@@ -44,8 +42,14 @@ public class Driver {
     Driver(){
         try{
             //Register JDBC driver
-           // Class.forName("oracle.jdbc.driver.OracleDriver");
+            // Class.forName("oracle.jdbc.driver.OracleDriver");
             //Open a connection
+
+            System.out.println("Please enter your username to connect DB: ");
+            String USER = sc.nextLine();
+            System.out.println("Please enter your password to connect DB: ");
+            String PASS = sc.nextLine();
+
             DriverManager.registerDriver (new oracle.jdbc.driver.OracleDriver());
             System.out.println("Connecting to database...");
             Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
