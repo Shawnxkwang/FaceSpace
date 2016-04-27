@@ -1017,7 +1017,9 @@ public class DBHelper {
 
         }finally{
             try{
-                resultSet.close();
+                if (!(resultSet == null)) {
+                    resultSet.close();
+                }
                 statement.close();
                 connection.close();
             }catch (SQLException ex){
