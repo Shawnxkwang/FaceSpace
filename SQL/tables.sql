@@ -1,5 +1,5 @@
 drop table UserTable cascade constraints;
--- UserTable(email, firstName, lastName, birthday)
+-- UserTable(email, firstName, lastName, birthday, lastLoginTime)
 create table UserTable (
 	-- userID number(10) not null,
 	email varchar2(128) not null,
@@ -89,7 +89,7 @@ create table Message (
 
 
 
--- auto generate megID
+-- auto generate msgID
 DROP SEQUENCE msg_seq;
 Create sequence msg_seq start with 1
 increment by 1

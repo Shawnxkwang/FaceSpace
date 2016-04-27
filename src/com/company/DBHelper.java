@@ -1051,7 +1051,7 @@ public class DBHelper {
                     String user = sb.toString();
 
                     if (users.contains(user)){
-
+                        // do nothing
                     }else {
                         count++;
                         System.out.println(fName + " " +lName);
@@ -1067,16 +1067,6 @@ public class DBHelper {
             System.out.println("Failed to send that message");
             e.printStackTrace();
 
-        }finally{
-            try{
-                if (!(resultSet == null)) {
-                    resultSet.close();
-                }
-                statement.close();
-                connection.close();
-            }catch (SQLException ex){
-                ex.printStackTrace();
-            }
         }
     }
 
