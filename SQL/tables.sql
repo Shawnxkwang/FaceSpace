@@ -19,8 +19,10 @@ create table Friendship (
 	timeInitiated timestamp not null,
 	timeEstablished timestamp,
 	constraints pk_friendship primary key(person1, person2),
-	constraints fk_person1 foreign key(person1) references UserTable(email),
+	constraints fk_person1 foreign key(person1) references UserTable(email)
+		 ON DELETE CASCADE,
 	constraints fk_person2 foreign key(person2) references UserTable(email)
+		 ON DELETE CASCADE
 );
 
 
@@ -35,7 +37,8 @@ create table GroupTable (
 	constraints pk_groups primary key(groupID)
 );
 
-Create OR REPLACE sequence group_seq start with 1
+DROP SEQUENCE group_seq;
+Create sequence group_seq start with 1
 increment by 1
 minvalue 1
 maxvalue 10000;
@@ -51,11 +54,47 @@ END;
 /
 
 
-Create OR REPLACE sequence msg_seq start with 1
+
+
+drop table Membership cascade constraints;
+-- Membership(groupID, member)
+create table Membership (
+	groupID number(10) not null,
+	member varchar2(128) not null,
+	constraints pk_membership primary key(groupID, member),
+	constraints fk_m_group foreign key(groupID) references GroupTable(groupID),
+	constraints fk_m_user foreign key(member) references UserTable(email)
+	 ON DELETE CASCADE  -- remove the user info. from group table when the user is deleted
+);
+
+
+
+drop table Message cascade constraints;
+-- Message(msgID, senderEmail, recipientEmail, time_sent, msg_subject, msg_body)
+create table Message (
+	msgID number(10) not null,
+	senderEmail varchar2(128) not null,
+	recipientEmail varchar2(128) not null,
+	time_sent timestamp,
+	msg_subject varchar2(1024),
+	msg_body varchar2(1024),
+	constraints pk_message primary key(msgID) );
+
+
+
+-- ALTER TABLE Message
+-- DROP CONSTRAINT FK_SENDER;
+-- ALTER TABLE Message
+-- DROP  CONSTRAINT FK_RECIPIENT;
+
+
+
+-- auto generate megID
+DROP SEQUENCE msg_seq;
+Create sequence msg_seq start with 1
 increment by 1
 minvalue 1
 maxvalue 10000;
-
 CREATE OR REPLACE TRIGGER make_msg_id
 BEFORE INSERT ON Message
 FOR EACH ROW
@@ -67,27 +106,15 @@ END;
 /
 
 
+--A message is deleted only when both the sender and all receivers are deleted
+CREATE OR REPLACE TRIGGER del_msg_when_drop_user
+AFTER DELETE ON UserTable
+BEGIN
+	DELETE FROM Message
+		WHERE 	senderEmail NOT IN (SELECT email FROM UserTable)
+			AND  recipientEmail NOT IN (SELECT email FROM UserTable);
+END;
+/
 
-drop table Membership cascade constraints;
--- Membership(groupID, member)
-create table Membership (
-	groupID number(10) not null,
-	member varchar2(128) not null,
-	constraints pk_membership primary key(groupID, member),
-	constraints fk_m_group foreign key(groupID) references GroupTable(groupID),
-	constraints fk_m_user foreign key(member) references UserTable(email)
-);
 
-drop table Message cascade constraints;
--- Message(msgID, senderEmail, recipientEmail, time_sent, msg_subject, msg_body)
-create table Message (
-	msgID number(10) not null,
-	senderEmail varchar2(128) not null,
-	recipientEmail varchar2(128) not null,
-	time_sent timestamp,
-	msg_subject varchar2(1024),
-	msg_body varchar2(1024),
-	constraints pk_message primary key(msgID),
-	constraints fk_sender foreign key(senderEmail) references UserTable(email),
-	constraints fk_recipient foreign key(recipientEmail) references UserTable(email)
-);
+

@@ -382,6 +382,9 @@ public class DBHelper {
                 System.out.println("\n"+email1 + " <--> "+email2+"\n"); return;
             }
 
+            
+            
+            
             // Second Degree
             statement = connection.createStatement();
             String degree2 = "SELECT T.firstName, T.lastName, T.email "+
