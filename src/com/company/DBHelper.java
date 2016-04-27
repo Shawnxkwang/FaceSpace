@@ -972,10 +972,53 @@ public class DBHelper {
 
         System.out.println("Please Enter The Name of the User you are looking for: ");
         String searchTerm = sc.nextLine();
-
+        String[] keyWords = searchTerm.split(" ");
+        ArrayList<String> users = new ArrayList<String>();
+        int count = 0;
         // displays all users similar to name
+        try {
+            statement = connection.createStatement();
+            String pattern = null;
 
+            for (int i = 0; i < keyWords.length;i++) {
+                pattern = keyWords[i].toUpperCase();
+                String searchUserQuery = "SELECT firstName, lastName FROM UserTable WHERE " +
+                        "upper(firstName) LIKE ('%" + pattern + "%') OR " +
+                        "upper(lastName) LIKE ('%" + pattern + "%') OR " +
+                        "upper(email) LIKE ('%" + pattern + "%')";
+                resultSet = statement.executeQuery(searchUserQuery);
+                if(resultSet.next()){
 
+                    String fName = resultSet.getString("firstName");
+                    String lName = resultSet.getString("lastName");
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(fName).append(lName);
+                    String user = sb.toString();
+                    if (users.contains(user)){
+
+                    }else {
+                        count++;
+                        System.out.println(fName + " " +lName);
+                        users.add(user);
+                    }
+                }
+            }
+            if (count == 0){
+                System.out.println("No User Found.");
+            }
+        }catch (SQLException e){
+            System.out.println("Failed to send that message");
+            e.printStackTrace();
+
+        }finally{
+            try{
+                resultSet.close();
+                statement.close();
+                connection.close();
+            }catch (SQLException ex){
+                ex.printStackTrace();
+            }
+        }
     }
 
     public void debug(){
