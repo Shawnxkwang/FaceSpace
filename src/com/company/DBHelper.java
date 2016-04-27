@@ -990,13 +990,14 @@ public class DBHelper {
                         "upper(lastName) LIKE ('%" + pattern + "%') OR " +
                         "upper(email) LIKE ('%" + pattern + "%')";
                 resultSet = statement.executeQuery(searchUserQuery);
-                if(resultSet.next()){
+                while(resultSet.next()){
 
                     String fName = resultSet.getString("firstName");
                     String lName = resultSet.getString("lastName");
                     StringBuilder sb = new StringBuilder();
                     sb.append(fName).append(lName);
                     String user = sb.toString();
+
                     if (users.contains(user)){
 
                     }else {
@@ -1006,6 +1007,7 @@ public class DBHelper {
                     }
                 }
             }
+            //System.out.println(count);
             if (count == 0){
                 System.out.println("No User Found.");
             }
