@@ -14,8 +14,7 @@ public class MessageGen {
     private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
     // private static final String DB_URL = "jdbc:oracle:thin:hr/hr@localhost:1521/XE";
     private static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
-    private static final String USER = "xiw69";
-    private static final String PASS = "3799662";
+
 
 
 
@@ -23,6 +22,12 @@ public class MessageGen {
         Connection conn = null;
         Statement stmt = null;
         ArrayList<String> arr = new ArrayList<String>();
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please enter your username: ");
+        String USER = sc.nextLine();
+        System.out.println("Please enter your password: ");
+        String PASS = sc.nextLine();
         try{
 
 
